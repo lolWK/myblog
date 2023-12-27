@@ -24,6 +24,69 @@ const config = {
         h: ['Hahmlet', ...defaultTheme.fontFamily.serif],
       },
       fontSize: {
+        'px16-300': [
+          '1rem',
+          {
+            fontWeight: '300',
+            lineHeight: 'auto',
+          },
+        ],
+        'px16-400': [
+          '1rem',
+          {
+            fontWeight: '400',
+            lineHeight: 'auto',
+          },
+        ],
+        'px16-500': [
+          '1rem',
+          {
+            fontWeight: '500',
+            lineHeight: 'auto',
+          },
+        ],
+        'px14-300': [
+          '0.875rem',
+          {
+            fontWeight: '300',
+            lineHeight: 'auto',
+          },
+        ],
+        'px14-400': [
+          '0.875rem',
+          {
+            fontWeight: '400',
+            lineHeight: 'auto',
+          },
+        ],
+        'px14-500': [
+          '0.875rem',
+          {
+            fontWeight: '500',
+            lineHeight: 'auto',
+          },
+        ],
+        'px12-300': [
+          '0.75rem',
+          {
+            fontWeight: '300',
+            lineHeight: 'auto',
+          },
+        ],
+        'px12-400': [
+          '0.75rem',
+          {
+            fontWeight: '400',
+            lineHeight: 'auto',
+          },
+        ],
+        'px12-500': [
+          '0.75rem',
+          {
+            fontWeight: '500',
+            lineHeight: 'auto',
+          },
+        ],
         // 나중에 불편하면 추가하기
         /* 예시들 https://tailwindcss.com/docs/font-size
         https://velog.io/@rrrrrrrrrrrocky/Next.js-13-tailwindcss-%EC%B4%88%EA%B8%B0%EC%84%B8%ED%8C%85%ED%95%98%EA%B8%B0
