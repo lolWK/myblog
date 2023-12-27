@@ -17,12 +17,7 @@ export default function RootLayout({ children }: LayoutProps) {
   return (
     <html lang="ko">
       <body className="container mx-auto px-4 max-w-screen-sm min-h-screen flex flex-col">
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="system"
-          enableSystem
-          disableTransitionOnChange
-        >
+        <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
           <Header />
           {children}
           <Footer />
