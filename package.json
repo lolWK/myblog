@@ -10,6 +10,9 @@
     "gen-types": "supabase get types typescript --linked > src/types/supabase.ts"
   },
   "dependencies": {
+    "@radix-ui/react-dialog": "^1.0.5",
+    "@radix-ui/react-navigation-menu": "^1.1.4",
+    "@radix-ui/react-slot": "^1.0.2",
     "@supabase/auth-helpers-nextjs": "^0.8.7",
     "@supabase/supabase-js": "^2.39.1",
     "@tiptap/pm": "^2.1.13",

@@ -1,10 +1,10 @@
-import LeftIcon from '@/assets/icons/icon-arrow-left.svg';
-import ClockIcon from '@/assets/icons/icon-clock.svg';
+// import LeftIcon from '@/assets/icons/icon-arrow-left.svg';
+// import ClockIcon from '@/assets/icons/icon-clock.svg';
 
 export default function Home() {
   return (
-    <p>
-      <main className="flex min-h-screen flex-col items-center justify-between p-24 font-p font-medium">
+    <div>
+      {/* <main className="flex min-h-screen flex-col items-center justify-between p-24 font-p font-medium">
         HomePage
         <LeftIcon
           width={100}
@@ -20,7 +20,7 @@ export default function Home() {
           stroke="#D4B382"
           color="#D4B382"
         />
-      </main>
-    </p>
+      </main> */}
+    </div>
   );
 }
