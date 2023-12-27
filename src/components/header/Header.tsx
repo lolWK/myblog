@@ -72,14 +72,14 @@ export default function Header() {
             <NavigationMenuItem>
               <Link href="/note" legacyBehavior passHref>
                 <NavigationMenuLink className="font-h text-px-300">
-                  Note
+                  Notes
                 </NavigationMenuLink>
               </Link>
             </NavigationMenuItem>
             <NavigationMenuItem>
-              <Link href="/archieve" legacyBehavior passHref>
+              <Link href="/archive" legacyBehavior passHref>
                 <NavigationMenuLink className="font-h text-px16-300">
-                  Archieve
+                  Archive
                 </NavigationMenuLink>
               </Link>
             </NavigationMenuItem>
@@ -132,14 +132,14 @@ export default function Header() {
                 <NavigationMenuItem>
                   <Link href="/note" legacyBehavior passHref>
                     <NavigationMenuLink className="font-h text-px16-300 py-4 px-16 block">
-                      Note
+                      Notes
                     </NavigationMenuLink>
                   </Link>
                 </NavigationMenuItem>
                 <NavigationMenuItem>
-                  <Link href="/archieve" legacyBehavior passHref>
+                  <Link href="/archive" legacyBehavior passHref>
                     <NavigationMenuLink className="font-h text-px-300 py-4 px-16 block">
-                      Archieve
+                      Archive
                     </NavigationMenuLink>
                   </Link>
                 </NavigationMenuItem>
