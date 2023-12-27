@@ -1,5 +1,5 @@
 import Logo from '@/assets/logo/logo.svg';
-import ModeToggle from '@/components/ModeToggle';
+import ThemeModeToggle from '@/components/ThemeModeToggle';
 import SearchInput from '@/components/input/SearchInput';
 import MainHeaderNav from '@/components/navigation/MainHeaderNav';
 import MainHeaderNavM from '@/components/navigation/MainHeaderNavM';
@@ -15,12 +15,12 @@ export default function Header() {
       <div className="hidden md:flex items-center">
         <SearchInput />
         <MainHeaderNav />
-        <ModeToggle />
+        <ThemeModeToggle />
       </div>
 
       <div className="md:hidden flex items-center">
         <SearchInput />
-        <ModeToggle />
+        <ThemeModeToggle />
         <MainHeaderNavM />
       </div>
     </header>
