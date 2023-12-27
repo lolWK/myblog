@@ -1,9 +1,11 @@
+'use client';
+
 import { useTheme } from 'next-themes';
 import { Button } from '@/components/ui/button';
 import MoonIcon from '@/assets/icons/icon-moon.svg';
 import SunIcon from '@/assets/icons/icon-sun.svg';
 
-export function ModeToggle() {
+export default function ModeToggle() {
   const { theme, setTheme } = useTheme();
 
   const toggleTheme = () => {
