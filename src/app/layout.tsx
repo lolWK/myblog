@@ -16,11 +16,13 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: LayoutProps) {
   return (
     <html lang="ko">
-      <body className="container mx-auto px-4 max-w-screen-sm min-h-screen flex flex-col">
+      <body>
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-          <Header />
-          {children}
-          <Footer />
+          <div className="container mx-auto px-4 max-w-screen-sm min-h-screen flex flex-col">
+            <Header />
+            {children}
+            <Footer />
+          </div>
         </ThemeProvider>
       </body>
     </html>
