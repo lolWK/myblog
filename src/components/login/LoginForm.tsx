@@ -1,5 +1,8 @@
 'use client';
 
+// import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
+// import type { Database } from '@/types/supabase';
+import { useRouter } from 'next/navigation';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import * as z from 'zod';
@@ -15,6 +18,7 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
+import { login } from '@/util/auth';
 
 const formSchema = z.object({
   email: z.string().email({
@@ -26,7 +30,8 @@ const formSchema = z.object({
 });
 
 export function LoginForm() {
-  // 1. Define your form.
+  const router = useRouter();
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -35,12 +40,17 @@ export function LoginForm() {
     },
   });
 
-  // 2. Define a submit handler.
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    // Do something with the form values.
-    // ✅ This will be type-safe and validated.
+  const onSubmit = async (values: z.infer<typeof formSchema>) => {
     console.log(values);
-  }
+    const { email, password } = values;
+
+    try {
+      await login(email, password);
+      router.refresh();
+    } catch (error) {
+      console.error('Login failed:', error);
+    }
+  };
 
   return (
     <Form {...form}>
