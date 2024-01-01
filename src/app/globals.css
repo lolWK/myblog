@@ -122,3 +122,13 @@
     @apply bg-background text-foreground;
   }
 }
+
+@layer utilities {
+  .sm-visible-hide {
+    @apply transition-opacity duration-500 ease-in-out;
+    opacity: 0;
+    @screen sm {
+      opacity: 1;
+    }
+  }
+}
