@@ -1,9 +1,13 @@
 // import LeftIcon from '@/assets/icons/icon-arrow-left.svg';
+
+import SectionHeader from '@/components/common/SectionHeader';
+
 // import ClockIcon from '@/assets/icons/icon-clock.svg';
 
 export default function Home() {
   return (
-    <div>
+    <main>
+      <SectionHeader pageType="blog" />
       {/* <main className="flex min-h-screen flex-col items-center justify-between p-24 font-p font-medium">
         HomePage
         <LeftIcon
@@ -21,6 +25,6 @@ export default function Home() {
           color="#D4B382"
         />
       </main> */}
-    </div>
+    </main>
   );
 }
