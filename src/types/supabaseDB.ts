@@ -114,7 +114,7 @@ export interface Database {
         }
         Insert: {
           id?: never
-          name: string
+          name?: string
         }
         Update: {
           id?: never
@@ -129,7 +129,7 @@ export interface Database {
         }
         Insert: {
           id?: never
-          name: string
+          name?: string
         }
         Update: {
           id?: never
