@@ -27,63 +27,63 @@ const config = {
         'px16-300': [
           '1rem',
           {
-            fontWeight: '300',
+            fontWeight: 300,
             lineHeight: 'auto',
           },
         ],
         'px16-400': [
           '1rem',
           {
-            fontWeight: '400',
+            fontWeight: 400,
             lineHeight: 'auto',
           },
         ],
         'px16-500': [
           '1rem',
           {
-            fontWeight: '500',
+            fontWeight: 500,
             lineHeight: 'auto',
           },
         ],
         'px14-300': [
           '0.875rem',
           {
-            fontWeight: '300',
+            fontWeight: 300,
             lineHeight: 'auto',
           },
         ],
         'px14-400': [
           '0.875rem',
           {
-            fontWeight: '400',
+            fontWeight: 400,
             lineHeight: 'auto',
           },
         ],
         'px14-500': [
           '0.875rem',
           {
-            fontWeight: '500',
+            fontWeight: 500,
             lineHeight: 'auto',
           },
         ],
         'px12-300': [
           '0.75rem',
           {
-            fontWeight: '300',
+            fontWeight: 300,
             lineHeight: 'auto',
           },
         ],
         'px12-400': [
           '0.75rem',
           {
-            fontWeight: '400',
+            fontWeight: 400,
             lineHeight: 'auto',
           },
         ],
         'px12-500': [
           '0.75rem',
           {
-            fontWeight: '500',
+            fontWeight: 500,
             lineHeight: 'auto',
           },
         ],
@@ -143,8 +143,8 @@ const config = {
         },
       },
       animation: {
-        'accordion-down': 'accordion-down 0.2s ease-out',
-        'accordion-up': 'accordion-up 0.2s ease-out',
+        'accordion-down': 'accordion-down 0.6s cubic-bezier(0.65, 0, 0.35, 1)',
+        'accordion-up': 'accordion-up 0.6s cubic-bezier(0.61, 1, 0.88, 1)',
       },
     },
   },
