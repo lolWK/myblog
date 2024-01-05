@@ -5,7 +5,7 @@ import { QueryResult, QueryData, QueryError } from '@supabase/supabase-js';
 type PostType = 'blog' | 'note';
 
 export const fetchPosts = async (type: PostType, page = 0): Promise<Post[]> => {
-  const itemsPerPage = 10;
+  const itemsPerPage = 8;
   const startIndex = page * itemsPerPage;
   const endIndex = startIndex + itemsPerPage - 1;
 
@@ -20,7 +20,7 @@ export const fetchPosts = async (type: PostType, page = 0): Promise<Post[]> => {
       summary,
       created_at,
       updated_at,
-      post_type!inner(
+      post_type(
         name
       ),
       topic(
@@ -31,7 +31,7 @@ export const fetchPosts = async (type: PostType, page = 0): Promise<Post[]> => {
       )
     `
     )
-    .eq('post_type.name', type)
+    .eq('post_type.name', type) // 이거 왜 .eq 가 안되는건지.. ilike
     .range(startIndex, endIndex);
 
   if (error) throw new Error(error.message);
@@ -46,4 +46,16 @@ export const fetchPosts = async (type: PostType, page = 0): Promise<Post[]> => {
     createdAt: post.created_at,
     updatedAt: post.updated_at,
   }));
+};
+
+export const fetchPostCountByType = async (type: PostType): Promise<number> => {
+  // count만 head쓰면 데이터들은 안불러옴!
+  const { data, error, count } = await supabase
+    .from('post')
+    .select(`post_type!inner(name)`, { count: 'exact', head: true })
+    .eq('post_type.name', type);
+
+  if (error) throw new Error(error.message);
+
+  return count ?? 0;
 };
