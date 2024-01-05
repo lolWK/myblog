@@ -14,7 +14,7 @@ export default function SectionHeader({ pageType }: Props) {
   const { name, description } = PAGE_INFO[pageType];
 
   return (
-    <section className="mt-[80px] flex justify-between">
+    <section className="mt-10 sm:mt-20 flex justify-between">
       <div className="font-h text-px16-300 flex items-center gap-8">
         <h2>{name}</h2>
         <p className="sm-visible-hide">{description}</p>
