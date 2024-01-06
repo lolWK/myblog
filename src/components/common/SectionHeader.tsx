@@ -1,5 +1,6 @@
 'use client';
 
+import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { PAGE_INFO } from '@/constants/pageInfo';
 import { SessionContext } from '@/contexts/SessionProvider';
@@ -22,11 +23,10 @@ export default function SectionHeader({ pageType }: Props) {
 
       {session && (
         /* TODO. 글쓰기 페이지로 이동 */
-        <Button
-          variant='secondary'
-          className='px-4 py-2 font-p text-px14-300 text-foreground'
-        >
-          글쓰기
+        <Button asChild variant='secondary' className='px-4 py-2'>
+          <Link href={'/edit'} className='font-p text-px14-300 text-foreground'>
+            글쓰기
+          </Link>
         </Button>
       )}
     </section>

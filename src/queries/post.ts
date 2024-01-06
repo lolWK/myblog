@@ -5,7 +5,7 @@ import { QueryResult, QueryData, QueryError } from '@supabase/supabase-js';
 type PostType = 'blog' | 'note';
 
 export const fetchPosts = async (type: PostType, page = 0): Promise<Post[]> => {
-  const itemsPerPage = 8;
+  const itemsPerPage = 10;
   const startIndex = page * itemsPerPage;
   const endIndex = startIndex + itemsPerPage - 1;
 
@@ -20,18 +20,12 @@ export const fetchPosts = async (type: PostType, page = 0): Promise<Post[]> => {
       summary,
       created_at,
       updated_at,
-      post_type(
-        name
-      ),
-      topic(
-        name
-      ),
-      book(
-        title
-      )
-    `
+      post_type(name),
+      topic(name),
+      book(title)
+      `
     )
-    .eq('post_type.name', type) // 이거 왜 .eq 가 안되는건지.. ilike
+    .ilike('post_type.name', type) // 이거 왜 .eq 가 안되는건지.. ilike
     .range(startIndex, endIndex);
 
   if (error) throw new Error(error.message);
