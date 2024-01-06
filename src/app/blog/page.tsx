@@ -1,3 +1,4 @@
+import PagePagination from '@/components/common/PagePagination';
 import SectionHeader from '@/components/common/SectionHeader';
 import PostList from '@/components/post/PostList';
 import PostListHeader from '@/components/post/PostListHeader';
@@ -10,12 +11,13 @@ export default async function BlogPage() {
   // console.log(posts);
   console.log(postCount);
   return (
-    <main className="flex flex-col gap-10">
-      <SectionHeader pageType="blog" />
+    <main className='flex flex-col gap-10'>
+      <SectionHeader pageType='blog' />
       {/* 전체 글 갯수 따로 가져와야하네? 오호 */}
       <div>
-        <PostListHeader leftText="All" rightText={11} />
+        <PostListHeader leftText='All' rightText={11} />
         <PostList posts={posts} />
+        <PagePagination />
       </div>
     </main>
   );
