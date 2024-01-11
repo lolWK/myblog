@@ -4,7 +4,7 @@ import { ThemeProvider } from '@/components/ThemeProvider';
 import { SessionProvider } from '@/contexts/SessionProvider';
 import Header from '@/components/header/Header';
 import Footer from '@/components/footer/Footer';
-
+import { TooltipProvider } from '@/components/plate-ui/tooltip';
 interface LayoutProps {
   children: React.ReactNode;
 }
@@ -16,15 +16,21 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: LayoutProps) {
   return (
-    <html lang="ko">
+    <html lang='ko'>
       <body>
-        <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+        <ThemeProvider attribute='class' defaultTheme='system' enableSystem>
           <SessionProvider>
-            <div className="container mx-auto px-4 max-w-screen-sm min-h-screen flex flex-col">
-              <Header />
-              {children}
-              <Footer />
-            </div>
+            <TooltipProvider
+              disableHoverableContent
+              delayDuration={500}
+              skipDelayDuration={0}
+            >
+              <div className='container mx-auto flex min-h-screen max-w-screen-sm flex-col px-4'>
+                <Header />
+                {children}
+                <Footer />
+              </div>
+            </TooltipProvider>
           </SessionProvider>
         </ThemeProvider>
       </body>
