@@ -52,7 +52,7 @@ export interface Database {
       post: {
         Row: {
           book_id: number | null
-          content: string
+          content: Json[]
           created_at: string
           id: number
           summary: string | null
@@ -63,7 +63,7 @@ export interface Database {
         }
         Insert: {
           book_id?: number | null
-          content: string
+          content: Json[]
           created_at?: string
           id?: number
           summary?: string | null
@@ -74,7 +74,7 @@ export interface Database {
         }
         Update: {
           book_id?: number | null
-          content?: string
+          content?: Json[]
           created_at?: string
           id?: number
           summary?: string | null
