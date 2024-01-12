@@ -2,6 +2,8 @@ import supabase from '@/lib/supabase';
 
 import { QueryResult, QueryData, QueryError } from '@supabase/supabase-js';
 
+export const revalidate = 0;
+
 type PostType = 'blog' | 'note';
 
 export const fetchPosts = async (type: PostType, page = 0): Promise<Post[]> => {
@@ -29,7 +31,7 @@ export const fetchPosts = async (type: PostType, page = 0): Promise<Post[]> => {
     .range(startIndex, endIndex);
 
   if (error) throw new Error(error.message);
-
+  console.log(data);
   return data.map((post) => ({
     id: post.id,
     title: post.title,
@@ -52,4 +54,20 @@ export const fetchPostCountByType = async (type: PostType): Promise<number> => {
   if (error) throw new Error(error.message);
 
   return count ?? 0;
+};
+
+export const fetchBooks = async () => {
+  const { data: book, error } = await supabase.from('book').select('*');
+
+  console.log(book);
+
+  return book;
+};
+
+export const fetchTopics = async () => {
+  const { data: topic, error } = await supabase.from('topic').select('*');
+
+  console.log(topic);
+
+  return topic;
 };
