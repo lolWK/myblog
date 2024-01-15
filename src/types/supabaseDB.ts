@@ -36,51 +36,51 @@ export interface Database {
     Tables: {
       book: {
         Row: {
-          id: number
+          id: string
           title: string
         }
         Insert: {
-          id?: never
+          id?: string
           title: string
         }
         Update: {
-          id?: never
+          id?: string
           title?: string
         }
         Relationships: []
       }
       post: {
         Row: {
-          book_id: number | null
-          content: Json[]
+          book_id: string | null
+          content: Json | null
           created_at: string
-          id: number
+          id: string
           summary: string | null
           title: string
-          topic_id: number
-          type_id: number
+          topic_id: string
+          type_id: string
           updated_at: string
         }
         Insert: {
-          book_id?: number | null
-          content: Json[]
+          book_id?: string | null
+          content?: Json | null
           created_at?: string
-          id?: number
+          id?: string
           summary?: string | null
           title: string
-          topic_id: number
-          type_id: number
+          topic_id: string
+          type_id: string
           updated_at?: string
         }
         Update: {
-          book_id?: number | null
-          content?: Json[]
+          book_id?: string | null
+          content?: Json | null
           created_at?: string
-          id?: number
+          id?: string
           summary?: string | null
           title?: string
-          topic_id?: number
-          type_id?: number
+          topic_id?: string
+          type_id?: string
           updated_at?: string
         }
         Relationships: [
@@ -109,30 +109,30 @@ export interface Database {
       }
       post_type: {
         Row: {
-          id: number
+          id: string
           name: string
         }
         Insert: {
-          id?: never
-          name?: string
+          id?: string
+          name: string
         }
         Update: {
-          id?: never
+          id?: string
           name?: string
         }
         Relationships: []
       }
       topic: {
         Row: {
-          id: number
+          id: string
           name: string
         }
         Insert: {
-          id?: never
-          name?: string
+          id?: string
+          name: string
         }
         Update: {
-          id?: never
+          id?: string
           name?: string
         }
         Relationships: []
