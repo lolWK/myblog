@@ -4,14 +4,10 @@ import { QueryResult, QueryData, QueryError } from '@supabase/supabase-js';
 
 export const revalidate = 0;
 
-type PostType = 'blog' | 'note';
-
 export const fetchPosts = async (type: PostType, page = 0): Promise<Post[]> => {
   const itemsPerPage = 10;
   const startIndex = page * itemsPerPage;
   const endIndex = startIndex + itemsPerPage - 1;
-
-  console.log('Making a query');
 
   const { data, error } = await supabase
     .from('post')
