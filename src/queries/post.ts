@@ -56,7 +56,7 @@ export const fetchPostCountByType = async (type: PostType): Promise<number> => {
 export const fetchBooks = async () => {
   const { data: book, error } = await supabase.from('book').select('*');
 
-  console.log(book);
+  if (error) throw new Error(error.message);
 
   return book;
 };
@@ -64,7 +64,19 @@ export const fetchBooks = async () => {
 export const fetchTopics = async () => {
   const { data: topic, error } = await supabase.from('topic').select('*');
 
-  console.log(topic);
+  if (error) throw new Error(error.message);
 
   return topic;
+};
+
+export const getPostTypeId = async (postType: PostType) => {
+  const { data, error } = await supabase
+    .from('post_type')
+    .select('id')
+    .eq('name', postType)
+    .single();
+
+  if (error) throw new Error(error.message);
+
+  return data.id;
 };
