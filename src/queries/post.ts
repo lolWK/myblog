@@ -28,6 +28,7 @@ export const fetchPosts = async (type: PostType, page = 0): Promise<Post[]> => {
       `
     )
     .ilike('post_type.name', type) // 이거 왜 .eq 가 안되는건지.. ilike
+    .order('created_at', { ascending: false })
     .range(startIndex, endIndex);
 
   if (error) throw new Error(error.message);
