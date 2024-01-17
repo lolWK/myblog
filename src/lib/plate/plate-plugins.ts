@@ -368,9 +368,6 @@ export const plugins = createPlugins(
     }),
     dragOverCursorPlugin,
 
-    // Collaboration
-    createCommentsPlugin(),
-
     // Deserialization
     createDeserializeDocxPlugin(),
     createDeserializeMdPlugin(),
