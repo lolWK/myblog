@@ -5,6 +5,7 @@ import { SessionProvider } from '@/contexts/SessionProvider';
 import Header from '@/components/header/Header';
 import Footer from '@/components/footer/Footer';
 import { TooltipProvider } from '@/components/plate-ui/tooltip';
+import { Toaster } from '@/components/ui/toaster';
 interface LayoutProps {
   children: React.ReactNode;
 }
@@ -31,6 +32,7 @@ export default function RootLayout({ children }: LayoutProps) {
                 <Footer />
               </div>
             </TooltipProvider>
+            <Toaster />
           </SessionProvider>
         </ThemeProvider>
       </body>
