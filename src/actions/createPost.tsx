@@ -61,6 +61,13 @@ export async function createPost(
   try {
     const postTypeId = await getPostTypeId(result.data.postType);
 
+    /* TODO. form 에러 따로 화면에 메시지 추가하기 */
+    if (!postTypeId) {
+      return {
+        errors: { _form: ['Cannot find post'] },
+      };
+    }
+
     const { data, error } = await supabase
       .from('post')
       .insert([

@@ -27,6 +27,7 @@ import { useRef } from 'react';
 import type { PlateEditor, TElement } from '@udecode/plate-common';
 import * as actions from '@/actions';
 import { useFormState } from 'react-dom';
+import TopicAndBookAddButton from './editor/TopicAndBookAddButton';
 
 // const formSchema = z.object({
 //   postType: z.enum(['blog', 'note']).default('blog'),
@@ -219,7 +220,7 @@ export default function EditForm({ bookList, topicList }: EditFormProps) {
                       <SelectValue placeholder='선택해주세요' />
                     </SelectTrigger>
                   </FormControl>
-                  {/* TODO. 나중에 데이터 받아오기 */}
+
                   <SelectContent>
                     {topicList?.map((topic) => (
                       <SelectItem value={topic.id} key={topic.id}>
@@ -228,9 +229,8 @@ export default function EditForm({ bookList, topicList }: EditFormProps) {
                     ))}
                   </SelectContent>
                 </Select>
-                <Button variant='outline' className='font-p text-px14-400'>
-                  주제 추가
-                </Button>
+
+                <TopicAndBookAddButton type='topic' />
               </div>
               <FormMessage className='font-p text-px12-400 text-destructive'>
                 {formState.errors.topic?.join(', ')}
@@ -254,7 +254,7 @@ export default function EditForm({ bookList, topicList }: EditFormProps) {
                     <SelectValue placeholder='선택해주세요(선택)' />
                   </SelectTrigger>
                 </FormControl>
-                {/* TODO. 나중에 데이터 받아오기 */}
+
                 <SelectContent>
                   {bookList?.map((book) => (
                     <SelectItem value={book.id} key={book.id}>
@@ -263,9 +263,7 @@ export default function EditForm({ bookList, topicList }: EditFormProps) {
                   ))}
                 </SelectContent>
               </Select>
-              <Button variant='outline' className='font-p text-px14-400'>
-                책장 추가
-              </Button>
+              <TopicAndBookAddButton type='book' />
             </FormItem>
           )}
         />
@@ -277,28 +275,16 @@ export default function EditForm({ bookList, topicList }: EditFormProps) {
             내용
           </FormLabel>
 
-          <Controller
-            control={form.control}
-            name='content'
-            render={({ field: { onChange, onBlur, value, ref } }) => (
-              <div className='w-full rounded-lg border bg-background shadow'>
-                <MyPlateEditor editorRef={editorRef} />
-              </div>
-            )}
-          />
-
-          {/* <FormControl>
-            <div className='w-full rounded-lg border bg-background shadow'>
-              <MyPlateEditor editorRef={editorRef} />
-            </div>
-          </FormControl> */}
+          <div className='w-full rounded-lg border bg-background shadow'>
+            <MyPlateEditor editorRef={editorRef} />
+          </div>
           <FormMessage className='font-p text-px12-400 text-destructive' />
         </FormItem>
 
         <div className='flex'>
           <Button
             type='submit'
-            className='ml-auto font-p text-px14-500 text-sm text-white'
+            className='ml-auto font-p text-px14-500 text-sm text-background'
           >
             게시
           </Button>
