@@ -1,5 +1,6 @@
 'use client';
 
+import Link from 'next/link';
 import React, { useState } from 'react';
 import {
   Accordion,
@@ -10,14 +11,12 @@ import {
 import CustomBadge from '@/components/common/CustomBadge';
 import BookIcon from '@/assets/icons/icon-book.svg';
 import { useDebounce } from '@/hooks/useDebounce';
-import { formatDate } from '@/util/formatData';
+import { formatDate } from '@/util/formatDate';
 interface PostListProps {
   posts: Post[];
 }
 
 export default function PostList({ posts }: PostListProps) {
-  // console.log(posts);
-
   const [hoverIndex, setHoverIndex] = useState<string | undefined>(undefined);
   const debouncedHoverIndex = useDebounce(hoverIndex, 300);
 
@@ -29,50 +28,62 @@ export default function PostList({ posts }: PostListProps) {
     setHoverIndex(undefined);
   };
 
+  if (!posts)
+    return (
+      <p className='h-[250px] text-center font-p text-px16-400 leading-[250px]'>
+        곧 글을 등록할 예정이에요 😊
+      </p>
+    );
+
   return (
-    <Accordion
-      type="single"
-      value={debouncedHoverIndex}
-      onValueChange={setHoverIndex}
-      className="w-full"
-    >
-      {posts.map((item, index) => (
-        <AccordionItem
-          key={item.id}
-          value={item.id.toString()}
-          onMouseOver={() => handleMouseOver(item.id.toString())}
-          onMouseOut={handleMouseOut}
-        >
-          <AccordionTrigger className="flex justify-between items-center w-full">
-            <div className="flex gap-4 flex-1 min-w-0 items-center">
-              <div className="flex-none">
-                <CustomBadge type="topic">{item.topic}</CustomBadge>
-              </div>
+    <div className='h-[470px]'>
+      <Accordion
+        type='single'
+        value={debouncedHoverIndex}
+        onValueChange={setHoverIndex}
+        className='w-full'
+      >
+        {posts.map((item, index) => (
+          <Link href={`/${item.postType}/${item.id}`} key={item.id}>
+            <AccordionItem
+              value={item.id.toString()}
+              onMouseOver={() => handleMouseOver(item.id.toString())}
+              onMouseOut={handleMouseOut}
+            >
+              <AccordionTrigger className='flex w-full items-center justify-between'>
+                <div className='flex min-w-0 flex-1 items-center gap-4'>
+                  <div className='flex-none'>
+                    <CustomBadge type='topic'>{item.topic}</CustomBadge>
+                  </div>
 
-              <h3 className="font-h text-px14-300 sm:text-px16-300 truncate flex-grow max-w-[70%] text-left">
-                {item.title}
-              </h3>
-            </div>
+                  <h3 className='max-w-[70%] flex-grow truncate text-left font-h text-px14-300 sm:text-px16-300'>
+                    {item.title}
+                  </h3>
+                </div>
 
-            <span className="font-h text-px12-300 sm:text-px14-300 text-neutral-400">
-              {formatDate(item.createdAt)}
-            </span>
-          </AccordionTrigger>
+                <span className='font-h text-px12-300 text-neutral-400 sm:text-px14-300'>
+                  {formatDate(item.createdAt)}
+                </span>
+              </AccordionTrigger>
 
-          <AccordionContent className="flex flex-col gap-1">
-            {item.summary && (
-              <p className="font-p text-px14-300 text-neutral-500">{item.summary}</p>
-            )}
-            {item.book && (
-              <span className="text-neutral-500 flex gap-1 items-center">
-                <BookIcon width={16} height={16} fill="currentColor" />
-                {item.book}
-              </span>
-            )}
-            {/* • 나중에 읽는 시간 추가 */}
-          </AccordionContent>
-        </AccordionItem>
-      ))}
-    </Accordion>
+              <AccordionContent className='flex flex-col gap-1'>
+                {item.summary && (
+                  <p className='font-p text-px14-300 text-neutral-500'>
+                    {item.summary}
+                  </p>
+                )}
+                {item.book && (
+                  <span className='flex items-center gap-1 text-neutral-500'>
+                    <BookIcon width={16} height={16} fill='currentColor' />
+                    {item.book}
+                  </span>
+                )}
+                {/* • 나중에 읽는 시간 추가 */}
+              </AccordionContent>
+            </AccordionItem>
+          </Link>
+        ))}
+      </Accordion>
+    </div>
   );
 }
