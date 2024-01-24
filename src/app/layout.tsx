@@ -26,9 +26,9 @@ export default function RootLayout({ children }: LayoutProps) {
               delayDuration={500}
               skipDelayDuration={0}
             >
-              <div className='container mx-auto flex min-h-screen max-w-screen-sm flex-col px-4'>
+              <div className='container mx-auto flex min-h-dvh max-w-screen-sm flex-col px-4'>
                 <Header />
-                {children}
+                <main className='flex-grow'>{children}</main>
                 <Footer />
               </div>
             </TooltipProvider>

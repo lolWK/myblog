@@ -45,10 +45,6 @@
     font-display: swap;
   }
 
-  html {
-    font-weight: 300;
-  }
-
   html::-webkit-scrollbar,
   body::-webkit-scrollbar {
     display: none;
@@ -58,6 +54,12 @@
   body {
     -ms-overflow-style: none;
     scrollbar-width: none;
+    font-family: 'Pretendard';
+    font-weight: 300;
+  }
+
+  h1 {
+    font-weight: 500;
   }
 }
 
