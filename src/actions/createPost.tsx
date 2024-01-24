@@ -37,8 +37,6 @@ export async function createPost(
 
   const contentString = formData.get('content');
 
-  console.log(formData.get('topic'));
-
   const result = createPostSchema.safeParse({
     postType: formData.get('postType'),
     title: formData.get('title'),
@@ -101,7 +99,7 @@ export async function createPost(
     }
   }
 
-  // TODO. 블로그 글 일 경우 노트일 경우 처리하기
-  revalidatePath('/blog');
-  redirect('/blog');
+  revalidatePath(`/${result.data.postType}/page/[pageNum]/page`);
+  // TODO. 목록으로 갈지 글로 이동할지 고민중
+  redirect(`/${result.data.postType}/page/1`);
 }

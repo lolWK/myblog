@@ -7,7 +7,7 @@ import { SessionContext } from '@/contexts/SessionProvider';
 import { useContext } from 'react';
 
 type Props = {
-  pageType: 'blog' | 'notes' | 'archive';
+  pageType: 'blog' | 'note' | 'archive';
 };
 
 export default function SectionHeader({ pageType }: Props) {
