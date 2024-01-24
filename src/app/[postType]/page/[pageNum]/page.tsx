@@ -48,7 +48,7 @@ export default async function BlogAndNotesPage({
         <PostListHeader leftText='All' rightText={postCount} />
         <PostList posts={posts} />
         <PagePagination
-          postCount={postCount}
+          allPostCount={postCount}
           currentPageNum={parseInt(pageNum)}
           pageType={postType}
         />
