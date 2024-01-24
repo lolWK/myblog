@@ -3,7 +3,7 @@ export const PAGE_INFO = {
     name: 'Blog',
     description: '지식, 경험, 생각을 공유하기 위한 공간',
   },
-  notes: {
+  note: {
     name: 'Notes',
     description: '개인 기록 공간',
   },
