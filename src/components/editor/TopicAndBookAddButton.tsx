@@ -71,6 +71,7 @@ export default function TopicAndBookAddButton({ type }: ButtonProps) {
       });
       reset();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [formState]);
 
   return (
