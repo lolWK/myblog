@@ -8,6 +8,29 @@ interface Post {
   createdAt: string;
   updatedAt: string;
 }
+interface PostWithContent {
+  id: string;
+  title: string;
+  summary: string | null;
+  topic: string;
+  book: string | null;
+  createdAt: string;
+  updatedAt: string;
+  content: Json;
+}
+
+type fetchPostDetail = {
+  id: string;
+  title: string;
+  summary: string | null;
+  topic: string;
+  book: string | null;
+  createdAt: string;
+  updatedAt: string;
+  content: Json;
+  prevPost: PrevAndNextPost;
+  nextPost: PrevAndNextPost;
+};
 
 interface Book {
   id: string;
@@ -20,3 +43,8 @@ interface Topic {
 }
 
 type PostType = 'blog' | 'note';
+
+type PrevAndNextPost = {
+  id: string;
+  title: string;
+} | null;

@@ -60,6 +60,10 @@ import {
   Ungroup,
   WrapText,
   X,
+  // 내가 추가한거
+  Calendar,
+  ArrowLeft,
+  ArrowRight,
 } from 'lucide-react';
 
 import type { LucideIcon } from 'lucide-react';
@@ -224,6 +228,10 @@ export const Icons = {
   moon: Moon,
   sun: SunMedium,
   twitter: Twitter,
+  // 내가 추가한거
+  calendar: Calendar,
+  arrowLeft: ArrowLeft,
+  arrowRight: ArrowRight,
 };
 
 export const iconVariants = cva('', {
