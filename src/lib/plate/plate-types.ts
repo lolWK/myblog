@@ -5,7 +5,7 @@ import {
   ELEMENT_CODE_BLOCK,
   ELEMENT_CODE_LINE,
 } from '@udecode/plate-code-block';
-import { TCommentText } from '@udecode/plate-comments';
+// import { TCommentText } from '@udecode/plate-comments';
 import {
   createPlateEditor,
   CreatePlateEditorOptions,
@@ -48,10 +48,7 @@ import {
   useEditorState,
   WithOverride,
 } from '@udecode/plate-common';
-import {
-  ELEMENT_EXCALIDRAW,
-  TExcalidrawElement,
-} from '@udecode/plate-excalidraw';
+
 import {
   ELEMENT_H1,
   ELEMENT_H2,
@@ -75,12 +72,7 @@ import {
   TImageElement,
   TMediaEmbedElement,
 } from '@udecode/plate-media';
-import {
-  ELEMENT_MENTION,
-  ELEMENT_MENTION_INPUT,
-  TMentionElement,
-  TMentionInputElement,
-} from '@udecode/plate-mention';
+
 import { ELEMENT_PARAGRAPH } from '@udecode/plate-paragraph';
 import {
   ELEMENT_TABLE,
@@ -101,7 +93,8 @@ export type PlainText = {
   text: string;
 };
 
-export interface RichText extends TText, TCommentText {
+export interface RichText extends TText {
+  //  TCommentText
   bold?: boolean;
   italic?: boolean;
   underline?: boolean;
@@ -125,20 +118,19 @@ export interface MyLinkElement extends TLinkElement {
   children: RichText[];
 }
 
-export interface MyMentionInputElement extends TMentionInputElement {
-  type: typeof ELEMENT_MENTION_INPUT;
-  children: [PlainText];
-}
+// export interface MyMentionInputElement extends TMentionInputElement {
+//   type: typeof ELEMENT_MENTION_INPUT;
+//   children: [PlainText];
+// }
 
-export interface MyMentionElement extends TMentionElement {
-  type: typeof ELEMENT_MENTION;
-  children: [EmptyText];
-}
+// export interface MyMentionElement extends TMentionElement {
+//   type: typeof ELEMENT_MENTION;
+//   children: [EmptyText];
+// }
 
-export type MyInlineElement =
-  | MyLinkElement
-  | MyMentionElement
-  | MyMentionInputElement;
+export type MyInlineElement = MyLinkElement;
+// | MyMentionElement
+// | MyMentionInputElement;
 export type MyInlineDescendant = MyInlineElement | RichText;
 export type MyInlineChildren = MyInlineDescendant[];
 
@@ -279,13 +271,6 @@ export interface MyHrElement extends MyBlockElement {
   children: [EmptyText];
 }
 
-export interface MyExcalidrawElement
-  extends TExcalidrawElement,
-    MyBlockElement {
-  type: typeof ELEMENT_EXCALIDRAW;
-  children: [EmptyText];
-}
-
 export type MyNestableBlock = MyParagraphElement;
 
 export type MyBlock = Exclude<MyElement, MyInlineElement>;
@@ -307,8 +292,7 @@ export type MyRootBlock =
   | MyTodoListElement
   | MyImageElement
   | MyMediaEmbedElement
-  | MyHrElement
-  | MyExcalidrawElement;
+  | MyHrElement;
 
 export type MyValue = MyRootBlock[];
 
