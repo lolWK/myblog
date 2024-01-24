@@ -36,7 +36,6 @@ import {
   unwrapCodeBlock,
 } from '@udecode/plate-code-block';
 import { createComboboxPlugin } from '@udecode/plate-combobox';
-import { createCommentsPlugin, MARK_COMMENT } from '@udecode/plate-comments';
 import {
   createPlugins,
   isBlockAboveEmpty,
@@ -48,10 +47,6 @@ import {
 } from '@udecode/plate-common';
 import { createDndPlugin } from '@udecode/plate-dnd';
 import { createEmojiPlugin } from '@udecode/plate-emoji';
-import {
-  createExcalidrawPlugin,
-  ELEMENT_EXCALIDRAW,
-} from '@udecode/plate-excalidraw';
 
 import {
   createFontBackgroundColorPlugin,
@@ -81,7 +76,6 @@ import {
   createIndentListPlugin,
   KEY_LIST_STYLE_TYPE,
 } from '@udecode/plate-indent-list';
-import { createJuicePlugin } from '@udecode/plate-juice';
 import { createKbdPlugin, MARK_KBD } from '@udecode/plate-kbd';
 import { createLineHeightPlugin } from '@udecode/plate-line-height';
 import { createLinkPlugin, ELEMENT_LINK } from '@udecode/plate-link';
@@ -98,11 +92,6 @@ import {
   ELEMENT_IMAGE,
   ELEMENT_MEDIA_EMBED,
 } from '@udecode/plate-media';
-import {
-  createMentionPlugin,
-  ELEMENT_MENTION,
-  ELEMENT_MENTION_INPUT,
-} from '@udecode/plate-mention';
 import { createNodeIdPlugin } from '@udecode/plate-node-id';
 import {
   createParagraphPlugin,
@@ -111,7 +100,6 @@ import {
 import { createResetNodePlugin } from '@udecode/plate-reset-node';
 import { createSelectOnBackspacePlugin } from '@udecode/plate-select';
 import { createBlockSelectionPlugin } from '@udecode/plate-selection';
-import { createDeserializeDocxPlugin } from '@udecode/plate-serializer-docx';
 import { createDeserializeMdPlugin } from '@udecode/plate-serializer-md';
 import { createTabbablePlugin } from '@udecode/plate-tabbable';
 import {
@@ -130,9 +118,8 @@ import { CodeBlockElement } from '@/components/plate-ui/code-block-element';
 import { CodeLeaf } from '@/components/plate-ui/code-leaf';
 import { CodeLineElement } from '@/components/plate-ui/code-line-element';
 import { CodeSyntaxLeaf } from '@/components/plate-ui/code-syntax-leaf';
-import { CommentLeaf } from '@/components/plate-ui/comment-leaf';
 import { EmojiCombobox } from '@/components/plate-ui/emoji-combobox';
-import { ExcalidrawElement } from '@/components/plate-ui/excalidraw-element';
+// import { ExcalidrawElement } from '@/components/plate-ui/excalidraw-element';
 import { HeadingElement } from '@/components/plate-ui/heading-element';
 import { HighlightLeaf } from '@/components/plate-ui/highlight-leaf';
 import { HrElement } from '@/components/plate-ui/hr-element';
@@ -142,8 +129,6 @@ import { LinkElement } from '@/components/plate-ui/link-element';
 import { LinkFloatingToolbar } from '@/components/plate-ui/link-floating-toolbar';
 import { ListElement } from '@/components/plate-ui/list-element';
 import { MediaEmbedElement } from '@/components/plate-ui/media-embed-element';
-import { MentionElement } from '@/components/plate-ui/mention-element';
-import { MentionInputElement } from '@/components/plate-ui/mention-input-element';
 import { ParagraphElement } from '@/components/plate-ui/paragraph-element';
 import { withPlaceholders } from '@/components/plate-ui/placeholder';
 import {
@@ -183,10 +168,9 @@ export const plugins = createPlugins(
     createCaptionPlugin({
       options: { pluginKeys: [ELEMENT_IMAGE, ELEMENT_MEDIA_EMBED] },
     }),
-    createMentionPlugin(),
     createTablePlugin(),
     createTodoListPlugin(),
-    createExcalidrawPlugin(),
+    // createExcalidrawPlugin(),
 
     // Marks
     createBoldPlugin(),
@@ -318,7 +302,11 @@ export const plugins = createPlugins(
     createSelectOnBackspacePlugin({
       options: {
         query: {
-          allow: [ELEMENT_EXCALIDRAW, ELEMENT_IMAGE, ELEMENT_HR],
+          allow: [
+            // ELEMENT_EXCALIDRAW
+            ELEMENT_IMAGE,
+            ELEMENT_HR,
+          ],
         },
       },
     }),
@@ -369,9 +357,7 @@ export const plugins = createPlugins(
     dragOverCursorPlugin,
 
     // Deserialization
-    createDeserializeDocxPlugin(),
     createDeserializeMdPlugin(),
-    createJuicePlugin(),
   ],
   {
     components: withDraggables(
@@ -391,8 +377,6 @@ export const plugins = createPlugins(
         [ELEMENT_LI]: withProps(PlateElement, { as: 'li' }),
         [ELEMENT_LINK]: LinkElement,
         [ELEMENT_MEDIA_EMBED]: MediaEmbedElement,
-        [ELEMENT_MENTION]: MentionElement,
-        [ELEMENT_MENTION_INPUT]: MentionInputElement,
         [ELEMENT_UL]: withProps(ListElement, { variant: 'ul' }),
         [ELEMENT_OL]: withProps(ListElement, { variant: 'ol' }),
         [ELEMENT_PARAGRAPH]: ParagraphElement,
@@ -401,7 +385,7 @@ export const plugins = createPlugins(
         [ELEMENT_TH]: TableCellHeaderElement,
         [ELEMENT_TODO_LI]: TodoListElement,
         [ELEMENT_TR]: TableRowElement,
-        [ELEMENT_EXCALIDRAW]: ExcalidrawElement,
+        // [ELEMENT_EXCALIDRAW]: ExcalidrawElement,
         [MARK_BOLD]: withProps(PlateLeaf, { as: 'strong' }),
         [MARK_CODE]: CodeLeaf,
         [MARK_HIGHLIGHT]: HighlightLeaf,
@@ -411,7 +395,6 @@ export const plugins = createPlugins(
         [MARK_SUBSCRIPT]: withProps(PlateLeaf, { as: 'sub' }),
         [MARK_SUPERSCRIPT]: withProps(PlateLeaf, { as: 'sup' }),
         [MARK_UNDERLINE]: withProps(PlateLeaf, { as: 'u' }),
-        [MARK_COMMENT]: CommentLeaf,
       })
     ),
   }
