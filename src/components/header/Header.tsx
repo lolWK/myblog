@@ -9,7 +9,7 @@ export default function Header() {
   return (
     <header className='flex h-20 items-center justify-between'>
       <h1 className='colors-foreground'>
-        <Link href='/blog'>
+        <Link href='/'>
           <Logo fill='currentColor' />
           <span className='sr-only'>1klog.dev blog</span>
         </Link>
