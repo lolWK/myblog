@@ -41,6 +41,65 @@ export const fetchPosts = async (type: PostType, page = 0): Promise<Post[]> => {
   }));
 };
 
+export const fetchPostDetail = async (
+  postId: string,
+  type: PostType
+): Promise<fetchPostDetail> => {
+  const { data: post, error } = await supabase
+    .from('post')
+    .select(
+      `
+      id,
+      title,
+      summary,
+      created_at,
+      updated_at,
+      topic(name),
+      post_type(name),
+      book(title),
+      content
+      `
+    )
+    .eq('id', postId)
+    .eq('post_type.name', type)
+    .single();
+
+  if (error) throw new Error(error.message);
+
+  const { data: prevPost } = await supabase
+    .from('post')
+    .select('id, title')
+    .lt('created_at', post.created_at)
+    .order('created_at', { ascending: false })
+    .limit(1)
+    .single();
+
+  const { data: nextPost } = await supabase
+    .from('post')
+    .select('id, title')
+    .gt('created_at', post.created_at)
+    .order('created_at', { ascending: true })
+    .limit(1)
+    .single();
+
+  console.log(post);
+  console.log(prevPost);
+  console.log(nextPost);
+
+  return {
+    id: post.id,
+    title: post.title,
+    summary: post.summary,
+    topic: post.topic ? post.topic.name : '',
+    book: post.book ? post.book.title : null,
+    createdAt: post.created_at,
+    updatedAt: post.updated_at,
+    content: post.content,
+    prevPost: prevPost ? { id: prevPost.id, title: prevPost.title } : null,
+    nextPost: nextPost ? { id: nextPost.id, title: nextPost.title } : null,
+  };
+};
+
 export const fetchPostCountByType = async (type: PostType): Promise<number> => {
   // count만 head쓰면 데이터들은 안불러옴!
   const { data, error, count } = await supabase
