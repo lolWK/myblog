@@ -24,6 +24,7 @@ import {
 } from './dropdown-menu';
 import { ToolbarButton } from './toolbar';
 
+// TODO: Basic block 드롭박스 원하는 항목만 추가하기.
 const items = [
   {
     label: 'Basic blocks',
@@ -133,14 +134,14 @@ export function InsertDropdownMenu(props: DropdownMenuProps) {
   return (
     <DropdownMenu modal={false} {...openState} {...props}>
       <DropdownMenuTrigger asChild>
-        <ToolbarButton pressed={openState.open} tooltip="Insert" isDropdown>
+        <ToolbarButton pressed={openState.open} tooltip='Insert' isDropdown>
           <Icons.add />
         </ToolbarButton>
       </DropdownMenuTrigger>
 
       <DropdownMenuContent
-        align="start"
-        className="flex max-h-[500px] min-w-0 flex-col gap-0.5 overflow-y-auto"
+        align='start'
+        className='flex max-h-[500px] min-w-0 flex-col gap-0.5 overflow-y-auto'
       >
         {items.map(({ items: nestedItems, label }, index) => (
           <React.Fragment key={label}>
@@ -151,7 +152,7 @@ export function InsertDropdownMenu(props: DropdownMenuProps) {
               ({ value: type, label: itemLabel, icon: Icon }) => (
                 <DropdownMenuItem
                   key={type}
-                  className="min-w-[180px]"
+                  className='min-w-[180px]'
                   onSelect={async () => {
                     switch (type) {
                       // case ELEMENT_CODE_BLOCK: {
@@ -209,7 +210,7 @@ export function InsertDropdownMenu(props: DropdownMenuProps) {
                     focusEditor(editor);
                   }}
                 >
-                  <Icon className="mr-2 h-5 w-5" />
+                  <Icon className='mr-2 h-5 w-5' />
                   {itemLabel}
                 </DropdownMenuItem>
               )
