@@ -1,4 +1,3 @@
-import Link from 'next/link';
 import {
   Pagination,
   PaginationContent,
@@ -10,25 +9,75 @@ import {
 } from '@/components/ui/pagination';
 
 type PaginationProps = {
-  // 필요한 props 타입 추가
-  // href: string;
-} & React.ComponentProps<typeof Link>;
+  allPostCount: number;
+  currentPageNum: number;
+  pageType: PostType;
+};
 
-export default function PagePagination() {
+export default function PagePagination({
+  allPostCount,
+  currentPageNum,
+  pageType,
+}: PaginationProps) {
+  const POSTS_PER_PAGE = 8;
+  const PAGE_GROUP_SIZE = 3;
+
+  const totalPages = Math.ceil(allPostCount / POSTS_PER_PAGE);
+  const totalGroups = Math.ceil(totalPages / PAGE_GROUP_SIZE);
+
+  const groupStartPage =
+    currentPageNum - ((currentPageNum - 1) % PAGE_GROUP_SIZE);
+  const groupEndPage = Math.min(
+    groupStartPage + PAGE_GROUP_SIZE - 1,
+    totalPages
+  );
+  const currentGroupIndex = Math.ceil(currentPageNum / PAGE_GROUP_SIZE);
+  const isLastGroup = currentGroupIndex === totalGroups;
+
+  const prevPageNum = (currentGroupIndex - 1) * 3;
+  const nextPageNum = currentGroupIndex * 3 + 1;
+  const showNextArrow = !isLastGroup;
+
   return (
     <Pagination className='mt-16'>
-      <PaginationContent>
-        <PaginationPrevious href='#' className='font-p text-px14-400' />
+      <PaginationContent className='flex justify-center'>
+        {currentPageNum > 3 && (
+          <>
+            <PaginationPrevious
+              href={`/${pageType}/page/${prevPageNum}`}
+              className='font-p text-px14-400'
+            />
 
-        <PaginationLink>1</PaginationLink>
-        <PaginationLink>2</PaginationLink>
-        <PaginationLink>3</PaginationLink>
+            <PaginationItem>
+              <PaginationEllipsis />
+            </PaginationItem>
+          </>
+        )}
 
-        <PaginationItem>
-          <PaginationEllipsis />
-        </PaginationItem>
+        {Array.from(
+          { length: groupEndPage - groupStartPage + 1 },
+          (_, i) => groupStartPage + i
+        ).map((pageNum) => (
+          <PaginationLink
+            key={pageNum}
+            href={`/${pageType}/page/${pageNum}`}
+            isActive={currentPageNum === pageNum}
+          >
+            {pageNum}
+          </PaginationLink>
+        ))}
 
-        <PaginationNext href='#' className='font-p text-px14-400' />
+        {showNextArrow && (
+          <>
+            <PaginationItem>
+              <PaginationEllipsis />
+            </PaginationItem>
+            <PaginationNext
+              href={`/${pageType}/page/${nextPageNum}`}
+              className='font-p text-px14-400'
+            />
+          </>
+        )}
       </PaginationContent>
     </Pagination>
   );
