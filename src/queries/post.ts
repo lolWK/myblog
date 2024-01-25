@@ -141,3 +141,41 @@ export const getPostTypeId = async (postType: PostType) => {
 
   return data.id;
 };
+
+// TODO. 그냥 fetchPost랑 합치는거 고민해보기.
+export const fetchSearchResult = async (query: string): Promise<Post[]> => {
+  const { data, error } = await supabase
+    .from('post')
+    .select(
+      `
+      id,
+      title,
+      summary,
+      created_at,
+      updated_at,
+      post_type!inner(name),
+      topic(name),
+      book(title)
+      `
+    )
+    .or(`title.ilike.%${query}%,summary.ilike.%${query}%`)
+    .order('created_at', { ascending: false });
+
+  if (error) {
+    console.error('Error fetching posts:', error);
+    return [];
+  }
+
+  console.log(data);
+
+  return data.map((post) => ({
+    id: post.id,
+    title: post.title,
+    postType: post.post_type ? post.post_type.name : '',
+    summary: post.summary,
+    topic: post.topic ? post.topic.name : '',
+    book: post.book ? post.book.title : null,
+    createdAt: post.created_at,
+    updatedAt: post.updated_at,
+  }));
+};
