@@ -50,7 +50,8 @@ export default async function BlogAndNotesPage({
         <PagePagination
           allPostCount={postCount}
           currentPageNum={parseInt(pageNum)}
-          pageType={postType}
+          // pageType={postType}
+          href={`/${postType}/page/`}
         />
       </div>
     </div>
