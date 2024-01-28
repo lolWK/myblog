@@ -8,6 +8,11 @@ interface Post {
   createdAt: string;
   updatedAt: string;
 }
+
+type PostsWithCount = {
+  posts: Post[];
+  postsCount: number;
+};
 interface PostWithContent {
   id: string;
   title: string;
