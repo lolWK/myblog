@@ -11,13 +11,13 @@ import {
 type PaginationProps = {
   allPostCount: number;
   currentPageNum: number;
-  pageType: PostType;
+  href: string;
 };
 
 export default function PagePagination({
   allPostCount,
   currentPageNum,
-  pageType,
+  href,
 }: PaginationProps) {
   const POSTS_PER_PAGE = 8;
   const PAGE_GROUP_SIZE = 3;
@@ -38,13 +38,15 @@ export default function PagePagination({
   const nextPageNum = currentGroupIndex * 3 + 1;
   const showNextArrow = !isLastGroup;
 
+  // const url = pageType ==="archive" ?`/archive` :
+
   return (
     <Pagination className='mt-16'>
       <PaginationContent className='flex justify-center'>
         {currentPageNum > 3 && (
           <>
             <PaginationPrevious
-              href={`/${pageType}/page/${prevPageNum}`}
+              href={`${href}${prevPageNum}`}
               className='font-p text-px14-400'
             />
 
@@ -60,7 +62,7 @@ export default function PagePagination({
         ).map((pageNum) => (
           <PaginationLink
             key={pageNum}
-            href={`/${pageType}/page/${pageNum}`}
+            href={`${href}${pageNum}`}
             isActive={currentPageNum === pageNum}
           >
             {pageNum}
@@ -73,7 +75,7 @@ export default function PagePagination({
               <PaginationEllipsis />
             </PaginationItem>
             <PaginationNext
-              href={`/${pageType}/page/${nextPageNum}`}
+              href={`${href}${nextPageNum}`}
               className='font-p text-px14-400'
             />
           </>
