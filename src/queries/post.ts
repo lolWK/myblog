@@ -1,6 +1,7 @@
 import supabase from '@/lib/supabase';
 
 import { QueryResult, QueryData, QueryError } from '@supabase/supabase-js';
+import type { PostgrestResponse } from '@supabase/supabase-js';
 
 export const revalidate = 0;
 
@@ -114,22 +115,6 @@ export const fetchPostCountByType = async (type: PostType): Promise<number> => {
   return count ?? 0;
 };
 
-export const fetchBooks = async () => {
-  const { data: book, error } = await supabase.from('book').select('*');
-
-  if (error) throw new Error(error.message);
-
-  return book;
-};
-
-export const fetchTopics = async () => {
-  const { data: topic, error } = await supabase.from('topic').select('*');
-
-  if (error) throw new Error(error.message);
-
-  return topic;
-};
-
 export const getPostTypeId = async (postType: PostType) => {
   const { data, error } = await supabase
     .from('post_type')
@@ -166,8 +151,6 @@ export const fetchSearchResult = async (query: string): Promise<Post[]> => {
     return [];
   }
 
-  console.log(data);
-
   return data.map((post) => ({
     id: post.id,
     title: post.title,
@@ -178,4 +161,63 @@ export const fetchSearchResult = async (query: string): Promise<Post[]> => {
     createdAt: post.created_at,
     updatedAt: post.updated_at,
   }));
+};
+
+export const fetchPostFilteredByTopicAndBook = async (
+  filter: string,
+  tag: string,
+  page: number = 1
+): Promise<PostsWithCount> => {
+  const itemsPerPage = 8;
+  const startIndex = (page - 1) * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage - 1;
+
+  console.log(filter, tag, page);
+
+  let filteredPosts = supabase
+    .from('post')
+    .select(
+      `
+    id,
+    title,
+    summary,
+    created_at,
+    updated_at,
+    post_type!inner(name),
+    topic!inner(name),
+    book(title)
+    `,
+      { count: 'exact' }
+    )
+    .order('created_at', { ascending: false })
+    .range(startIndex, endIndex);
+
+  if (filter === 'book' && tag) {
+    filteredPosts = filteredPosts.not('book', 'is', null).eq('book.title', tag);
+  }
+
+  if (filter === 'topic' && tag) {
+    filteredPosts = filteredPosts.eq('topic.name', tag);
+  }
+
+  const { data, error, count } = await filteredPosts;
+
+  console.log(data);
+
+  if (error) throw new Error(error.message);
+
+  const posts = data.map((post) => ({
+    id: post.id,
+    title: post.title,
+    postType: post.post_type ? post.post_type.name : '',
+    summary: post.summary,
+    topic: post.topic ? post.topic.name : '',
+    book: post.book ? post.book.title : null,
+    createdAt: post.created_at,
+    updatedAt: post.updated_at,
+  }));
+
+  const postsCount = count ?? 0;
+
+  return { posts, postsCount };
 };
