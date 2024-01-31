@@ -16,12 +16,12 @@ export default function PrevNextPostButton({
   console.log('타입???????????', type);
 
   return (
-    <div className='relative w-full'>
+    <div className='relative h-28 w-full'>
       {prevPost && (
         <Button
           asChild
           variant='ghost'
-          className='absolute left-0 p-0 font-p hover:bg-transparent'
+          className='absolute left-0 flex h-fit w-2/5 min-w-40 justify-start p-0 font-p hover:bg-transparent'
         >
           <Link href={`/${type}/${prevPost?.id}`}>
             <div className='flex flex-col justify-start gap-1'>
@@ -29,7 +29,7 @@ export default function PrevNextPostButton({
                 <Icons.arrowLeft width={20} strokeWidth={1.5} />
                 <span className='text-px14-400'>이전 글</span>
               </div>
-              <p className='ml-6 text-px14-500'>{prevPost?.title}</p>
+              <p className='ml-6 text-wrap text-px14-500'>{prevPost?.title}</p>
             </div>
           </Link>
         </Button>
@@ -38,7 +38,7 @@ export default function PrevNextPostButton({
         <Button
           asChild
           variant='ghost'
-          className='absolute right-0 p-0 font-p hover:bg-transparent'
+          className='absolute right-0 flex h-fit w-2/5 min-w-40 justify-end p-0 font-p hover:bg-transparent'
         >
           <Link href={`/${type}/${nextPost?.id}`}>
             <div className='flex flex-col justify-start gap-1'>
