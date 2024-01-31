@@ -28,6 +28,7 @@ import type { PlateEditor, TElement } from '@udecode/plate-common';
 import * as actions from '@/actions';
 import { useFormState } from 'react-dom';
 import TopicAndBookAddButton from './editor/TopicAndBookAddButton';
+import { ELEMENT_PARAGRAPH } from '@udecode/plate-paragraph';
 
 // const formSchema = z.object({
 //   postType: z.enum(['blog', 'note']).default('blog'),
@@ -51,30 +52,59 @@ interface EditInputFormData {
   summary: string | undefined;
   topic: string | undefined;
   book: string | undefined;
-  content: TElement[];
+  // content: TElement[];
 }
+
+type EditPostFormValue = {
+  postType: string;
+  title: string;
+  summary: string | undefined;
+  topic: string | undefined;
+  book: string | undefined;
+};
 
 interface EditFormProps {
   bookList: Book[] | null;
   topicList: Topic[] | null;
+  postId?: string | null;
+  initialContentValue?: TElement[];
+  initialFormValues?: EditPostFormValue;
 }
 
-export default function EditForm({ bookList, topicList }: EditFormProps) {
-  const [formState, action] = useFormState(actions.createPost, {
+const DEFAULT_FORM_VALUE = {
+  postType: 'blog',
+  title: '',
+  summary: '',
+  topic: '',
+  book: '',
+};
+
+const INITIAL_VALUE = [{ type: ELEMENT_PARAGRAPH, children: [{ text: '' }] }];
+
+export default function EditForm({
+  bookList,
+  topicList,
+  postId = null,
+  initialContentValue = INITIAL_VALUE,
+  initialFormValues = DEFAULT_FORM_VALUE,
+}: EditFormProps) {
+  // const { id, content, ...initalFormValues } = editPostFormValue;
+  const isEditMode = Boolean(postId);
+
+  const [formState, createPostAction] = useFormState(actions.createPost, {
     errors: {},
   });
 
+  const [updateFormState, updatePostAction] = useFormState(
+    actions.updatePost.bind(null, { postId }),
+    { errors: {} }
+  );
+
   const form = useForm({
     // resolver: zodResolver(formSchema),
-    defaultValues: {
-      postType: 'blog',
-      title: '',
-      summary: '',
-      topic: '',
-      book: '',
-      content: [],
-      // tag:''
-    },
+    defaultValues: initialFormValues,
+    // content: editPostFormValue?.content || [{ type: ELEMENT_PARAGRAPH, children: [{ text: '' }] }],
+    // tag:''
   });
 
   const editorRef = useRef<PlateEditor | null>(null);
@@ -104,8 +134,13 @@ export default function EditForm({ bookList, topicList }: EditFormProps) {
     // for (let [key, value] of formData.entries()) {
     //   console.log(`${key}: ${value}`);
     // }
-
-    action(formData);
+    if (!postId) {
+      console.log('새글쓰기모드~');
+      createPostAction(formData);
+    } else {
+      console.log('웅 난 수정이얌');
+      updatePostAction(formData);
+    }
 
     // const completeData = {
     //   ...formData,
@@ -276,7 +311,10 @@ export default function EditForm({ bookList, topicList }: EditFormProps) {
           </FormLabel>
 
           <div className='w-full rounded-lg border bg-background shadow'>
-            <MyPlateEditor editorRef={editorRef} />
+            <MyPlateEditor
+              editorRef={editorRef}
+              initialValue={initialContentValue}
+            />
           </div>
           <FormMessage className='font-p text-px12-400 text-destructive' />
         </FormItem>
@@ -286,7 +324,7 @@ export default function EditForm({ bookList, topicList }: EditFormProps) {
             type='submit'
             className='ml-auto font-p text-px14-500 text-sm text-background'
           >
-            게시
+            {isEditMode ? '수정' : '게시'}
           </Button>
         </div>
       </form>
