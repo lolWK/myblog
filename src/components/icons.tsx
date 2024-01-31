@@ -64,6 +64,7 @@ import {
   Calendar,
   ArrowLeft,
   ArrowRight,
+  PencilLine,
 } from 'lucide-react';
 
 import type { LucideIcon } from 'lucide-react';
@@ -232,6 +233,7 @@ export const Icons = {
   calendar: Calendar,
   arrowLeft: ArrowLeft,
   arrowRight: ArrowRight,
+  edit: PencilLine,
 };
 
 export const iconVariants = cva('', {
