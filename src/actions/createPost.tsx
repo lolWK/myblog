@@ -36,6 +36,7 @@ export async function createPost(
   console.log('들어왔어용', formData);
 
   const contentString = formData.get('content');
+  let postId;
 
   const result = createPostSchema.safeParse({
     postType: formData.get('postType'),
@@ -78,11 +79,11 @@ export async function createPost(
           content: result.data.content,
         },
       ])
-      .select();
-
-    console.log('제대로 들어갓다', data);
+      .select(`id`);
 
     if (error) throw new Error(error.message);
+
+    postId = data[0].id;
   } catch (err: unknown) {
     if (err instanceof Error) {
       return {
@@ -99,7 +100,7 @@ export async function createPost(
     }
   }
 
-  revalidatePath(`/${result.data.postType}/page/[pageNum]/page`);
-  // TODO. 목록으로 갈지 글로 이동할지 고민중
-  redirect(`/${result.data.postType}/page/1`);
+  // TODO. archive 페이지도 반영하기~
+  revalidatePath(`/[postType]/page/[pageNum]`, 'page');
+  redirect(`/${result.data.postType}/${postId}`);
 }
