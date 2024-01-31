@@ -1,8 +1,7 @@
 import supabase from '@/lib/supabase';
 
 import { QueryResult, QueryData, QueryError } from '@supabase/supabase-js';
-import type { PostgrestResponse } from '@supabase/supabase-js';
-
+import type { TElement } from '@udecode/plate-common';
 export const revalidate = 0;
 
 export const fetchPosts = async (type: PostType, page = 1): Promise<Post[]> => {
@@ -48,6 +47,8 @@ export const fetchPostDetail = async (
   postId: string,
   type: PostType
 ): Promise<fetchPostDetail> => {
+  console.log(postId, type);
+
   const { data: post, error } = await supabase
     .from('post')
     .select(
@@ -85,12 +86,9 @@ export const fetchPostDetail = async (
     .limit(1)
     .single();
 
-  console.log(post);
-  console.log(prevPost);
-  console.log(nextPost);
-
   return {
     id: post.id,
+    postType: post.post_type!.name,
     title: post.title,
     summary: post.summary,
     topic: post.topic ? post.topic.name : '',
@@ -100,6 +98,51 @@ export const fetchPostDetail = async (
     content: post.content,
     prevPost: prevPost ? { id: prevPost.id, title: prevPost.title } : null,
     nextPost: nextPost ? { id: nextPost.id, title: nextPost.title } : null,
+  };
+};
+
+type PostDetailInitialValue = {
+  id: string;
+  postType: string;
+  title: string;
+  summary: string | undefined;
+  topic: string | undefined;
+  book: string | undefined;
+  content: TElement[];
+};
+
+// TODO. admin만 가능해야함
+export const fetchEditPostDetail = async (
+  postId: string
+): Promise<PostDetailInitialValue> => {
+  console.log(postId);
+
+  const { data: post, error } = await supabase
+    .from('post')
+    .select(
+      `
+      id,
+      title,
+      summary,
+      topic(id),
+      post_type(name),
+      book(id),
+      content
+      `
+    )
+    .eq('id', postId)
+    .single();
+
+  if (error) throw new Error(error.message);
+
+  return {
+    id: post.id,
+    postType: post.post_type ? post.post_type.name : 'blog',
+    title: post.title,
+    summary: post.summary ? post.summary : undefined,
+    topic: post.topic ? post.topic.id : undefined,
+    book: post.book ? post.book.id : undefined,
+    content: post.content as TElement[],
   };
 };
 
