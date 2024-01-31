@@ -1,12 +1,13 @@
 import PrevNextPostButton from '@/components/common/PrevNextPostButton';
-import Post from '@/components/post/Post';
+import PostDetailContent from '@/components/post/PostDetailContent';
+import PostDetailHeader from '@/components/post/PostDetailHeader';
 import supabase from '@/lib/supabase';
 import { fetchPostDetail } from '@/queries/post';
 import { notFound } from 'next/navigation';
 
 export const revalidate = 0;
 
-interface DetailBlogPageProps {
+interface PostDetailPageProps {
   params: {
     postId: string;
     postType: PostType;
@@ -28,10 +29,14 @@ export async function generateStaticParams() {
 }
 
 // DetailBlogPage 컴포넌트에서는 postId와 blog를 직접 props로 받습니다.
-export default async function DetailPage({ params }: DetailBlogPageProps) {
+export default async function PostDetailPage({ params }: PostDetailPageProps) {
   const { postId, postType } = params;
   const data = await fetchPostDetail(postId, postType);
-  const { prevPost, nextPost, ...post } = data;
+
+  console.log(postId, postType);
+
+  // TOOD: 기능 수정하면서 data 들어오는 데이터 수정하기
+  const { prevPost, nextPost, content, ...post } = data;
 
   if (!post) {
     notFound();
@@ -40,14 +45,17 @@ export default async function DetailPage({ params }: DetailBlogPageProps) {
   console.log(params);
 
   return (
-    <div>
-      <Post post={post} />
+    <>
+      <article>
+        <PostDetailHeader postInfo={post} />
+        <PostDetailContent content={content} />
+      </article>
 
       <PrevNextPostButton
         prevPost={prevPost}
         nextPost={nextPost}
         type={postType}
       />
-    </div>
+    </>
   );
 }
