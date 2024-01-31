@@ -13,20 +13,11 @@ type PostsWithCount = {
   posts: Post[];
   postsCount: number;
 };
-interface PostWithContent {
-  id: string;
-  title: string;
-  summary: string | null;
-  topic: string;
-  book: string | null;
-  createdAt: string;
-  updatedAt: string;
-  content: Json;
-}
 
 type fetchPostDetail = {
   id: string;
   title: string;
+  postType: string;
   summary: string | null;
   topic: string;
   book: string | null;
