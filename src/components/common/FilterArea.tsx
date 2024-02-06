@@ -22,30 +22,35 @@ export function FilterTitle({ icon, text }: FilterTitleProps) {
 
 type FilterListProps = {
   items: ListItemType[];
-  currentTag: string;
+  currentKeyword: string;
   currentFilter: string;
   prefix?: string;
 };
 
-/* filter랑 tag 다 있어야함 tag는 있는데 filter 없음.. 위에서 넣어줘야함 */
 export function FilterList({
   items,
-  currentTag,
+  currentKeyword,
   currentFilter,
   prefix = '',
 }: FilterListProps) {
   return (
     <ul className='flex flex-wrap items-center gap-2 text-px12-300'>
       {items.map((item) => {
-        const isCurrentTag =
-          item.text.toLowerCase() === currentTag?.toLowerCase();
-        const listItemClass = isCurrentTag
+        const isCurrentKeyword =
+          item.text.toLowerCase() === currentKeyword?.toLowerCase();
+        const listItemClass = isCurrentKeyword
           ? `hover:bg-accent border-b-[1px] border-current py-1 px-1 transition-colors font-medium`
           : 'hover:bg-accent py-1 px-1 transition-colors';
 
         return (
           <li key={item.id} className={listItemClass}>
-            <Link href={`/archive?filter=${currentFilter}&tag=${item.text}`}>
+            <Link
+              href={{
+                pathname: '/archive',
+                query: { filter: currentFilter, keyword: item.text },
+              }}
+              scroll={false}
+            >
               {prefix}
               {item.text} ({item.count})
             </Link>

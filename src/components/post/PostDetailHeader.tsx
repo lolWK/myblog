@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { SessionContext } from '@/contexts/SessionProvider';
+import { SessionContext } from '@/provider/SessionProvider';
 import { useContext } from 'react';
 import { Icons } from '@/components/icons';
 import { formatDate } from '@/util/formatDate';
@@ -33,7 +33,7 @@ export default function PostDetailHeader({ postInfo }: PostDeatilHeaderProps) {
   };
 
   return (
-    <div className='mb-8 mt-[104px] flex flex-col gap-2'>
+    <div className='mb-8 flex flex-col gap-2'>
       <div className='flex items-center justify-between'>
         <div className='flex items-center gap-2'>
           <CustomBadge type='topic'>{postInfo.topic}</CustomBadge>

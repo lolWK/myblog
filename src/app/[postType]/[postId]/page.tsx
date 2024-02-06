@@ -1,6 +1,9 @@
 import PrevNextPostButton from '@/components/common/PrevNextPostButton';
 import PostDetailContent from '@/components/post/PostDetailContent';
 import PostDetailHeader from '@/components/post/PostDetailHeader';
+import ContentOfTableSidebar from '@/components/sidebar/contentOfTable';
+import ListOfBookSeriesSidebar from '@/components/sidebar/listOfBookSeries';
+
 import supabase from '@/lib/supabase';
 import { fetchPostDetail } from '@/queries/post';
 import { notFound } from 'next/navigation';

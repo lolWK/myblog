@@ -25,3 +25,23 @@ export const fetchAllBookListWithCount = async () => {
     })) || []
   );
 };
+
+export const fetchListOfBookSeries = async (postId: string) => {
+  const { data: bookId } = await supabase
+    .from('post')
+    .select('book_id')
+    .eq('id', postId)
+    .single();
+
+  if (!bookId || !bookId.book_id) return null;
+
+  const { data: listOfBookSeries, error } = await supabase
+    .from('post')
+    .select('id,title')
+    .eq('book_id', bookId.book_id)
+    .order('created_at', { ascending: false });
+
+  if (error) throw new Error(error.message);
+
+  return listOfBookSeries;
+};

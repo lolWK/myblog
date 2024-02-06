@@ -43,6 +43,28 @@ export const fetchPosts = async (type: PostType, page = 1): Promise<Post[]> => {
   }));
 };
 
+type fetchPostDetail = {
+  id: string;
+  title: string;
+  postType: string;
+  summary: string | null;
+  topic: string;
+  book: string | null;
+  createdAt: string;
+  updatedAt: string;
+  content: TElement[];
+  prevPost: {
+    id: string;
+    title: string;
+    postType: string;
+  } | null;
+  nextPost: {
+    id: string;
+    title: string;
+    postType: string;
+  } | null;
+};
+
 export const fetchPostDetail = async (
   postId: string,
   type: PostType
@@ -72,7 +94,7 @@ export const fetchPostDetail = async (
 
   const { data: prevPost } = await supabase
     .from('post')
-    .select('id, title')
+    .select('id, title, post_type!inner(name)')
     .lt('created_at', post.created_at)
     .order('created_at', { ascending: false })
     .limit(1)
@@ -80,7 +102,7 @@ export const fetchPostDetail = async (
 
   const { data: nextPost } = await supabase
     .from('post')
-    .select('id, title')
+    .select('id, title, post_type!inner(name)')
     .gt('created_at', post.created_at)
     .order('created_at', { ascending: true })
     .limit(1)
@@ -95,9 +117,66 @@ export const fetchPostDetail = async (
     book: post.book ? post.book.title : null,
     createdAt: post.created_at,
     updatedAt: post.updated_at,
-    content: post.content,
-    prevPost: prevPost ? { id: prevPost.id, title: prevPost.title } : null,
-    nextPost: nextPost ? { id: nextPost.id, title: nextPost.title } : null,
+    content: post.content as TElement[],
+    prevPost: prevPost
+      ? {
+          id: prevPost.id,
+          title: prevPost.title,
+          postType: prevPost.post_type!.name,
+        }
+      : null,
+    nextPost: nextPost
+      ? {
+          id: nextPost.id,
+          title: nextPost.title,
+          postType: nextPost.post_type!.name,
+        }
+      : null,
+  };
+};
+
+type PostDetailInitialValue = {
+  id: string;
+  postType: string;
+  title: string;
+  summary: string | undefined;
+  topic: string | undefined;
+  book: string | undefined;
+  content: TElement[];
+};
+
+// TODO. admin만 가능해야함
+export const fetchEditPostDetail = async (
+  postId: string
+): Promise<PostDetailInitialValue> => {
+  console.log(postId);
+
+  const { data: post, error } = await supabase
+    .from('post')
+    .select(
+      `
+      id,
+      title,
+      summary,
+      topic(id),
+      post_type(name),
+      book(id),
+      content
+      `
+    )
+    .eq('id', postId)
+    .single();
+
+  if (error) throw new Error(error.message);
+
+  return {
+    id: post.id,
+    postType: post.post_type ? post.post_type.name : 'blog',
+    title: post.title,
+    summary: post.summary ? post.summary : undefined,
+    topic: post.topic ? post.topic.id : undefined,
+    book: post.book ? post.book.id : undefined,
+    content: post.content as TElement[],
   };
 };
 
