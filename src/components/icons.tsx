@@ -65,6 +65,8 @@ import {
   ArrowLeft,
   ArrowRight,
   PencilLine,
+  ChevronUp,
+  Share2,
 } from 'lucide-react';
 
 import type { LucideIcon } from 'lucide-react';
@@ -234,6 +236,8 @@ export const Icons = {
   arrowLeft: ArrowLeft,
   arrowRight: ArrowRight,
   edit: PencilLine,
+  chevronUp: ChevronUp,
+  share: Share2,
 };
 
 export const iconVariants = cva('', {
