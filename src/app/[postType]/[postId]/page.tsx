@@ -1,6 +1,8 @@
 import PrevNextPostButton from '@/components/common/PrevNextPostButton';
 import PostDetailContent from '@/components/post/PostDetailContent';
 import PostDetailHeader from '@/components/post/PostDetailHeader';
+import ContentOfTableSidebar from '@/components/sidebar/contentOfTable';
+import ListOfBookSeriesSidebar from '@/components/sidebar/listOfBookSeries';
 import supabase from '@/lib/supabase';
 import { fetchPostDetail } from '@/queries/post';
 import { notFound } from 'next/navigation';
@@ -38,6 +40,8 @@ export default async function PostDetailPage({ params }: PostDetailPageProps) {
   // TOOD: 기능 수정하면서 data 들어오는 데이터 수정하기
   const { prevPost, nextPost, content, ...post } = data;
 
+  console.log('post.book', post.book);
+
   if (!post) {
     notFound();
   }
@@ -45,17 +49,21 @@ export default async function PostDetailPage({ params }: PostDetailPageProps) {
   console.log(params);
 
   return (
-    <>
-      <article>
-        <PostDetailHeader postInfo={post} />
-        <PostDetailContent content={content} />
-      </article>
+    <div className='relative mt-[104px] flex w-full'>
+      <div className='absolute -right-48 order-3 h-full'>
+        <ContentOfTableSidebar />
+      </div>
+      <div className='absolute -left-48 order-1 h-full'>
+        <ListOfBookSeriesSidebar currentBook={post.book} postId={postId} />
+      </div>
+      <div className='order-2 flex-grow'>
+        <article>
+          <PostDetailHeader postInfo={post} />
+          <PostDetailContent content={content} />
+        </article>
 
-      <PrevNextPostButton
-        prevPost={prevPost}
-        nextPost={nextPost}
-        type={postType}
-      />
-    </>
+        <PrevNextPostButton prevPost={prevPost} nextPost={nextPost} />
+      </div>
+    </div>
   );
 }

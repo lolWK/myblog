@@ -9,11 +9,12 @@ import PagePagination from '@/components/common/PagePagination';
 import { fetchAllTopicListWithCount } from '@/queries/topic';
 import { fetchAllBookListWithCount } from '@/queries/book';
 import { fetchPostFilteredByTopicAndBook } from '@/queries/post';
+import { getArchiveListHeader } from '@/util/getArchiveListHeader';
 
 type ArchivePageProps = {
   searchParams: {
     filter: 'topic' | 'book';
-    tag: string;
+    keyword: string;
     page: string;
   };
 };
@@ -21,22 +22,16 @@ type ArchivePageProps = {
 export default async function ArchivePage({ searchParams }: ArchivePageProps) {
   const currentPage = parseInt(searchParams.page) || 1;
   const filter = searchParams.filter || 'All';
-  const tag = searchParams.tag || 'All';
+  const keyword = searchParams.keyword || 'All';
 
   const topicList = await fetchAllTopicListWithCount();
   const bookList = await fetchAllBookListWithCount();
   const { posts, postsCount } = await fetchPostFilteredByTopicAndBook(
     filter,
-    tag,
+    keyword,
     currentPage
   );
 
-  const ListHeaderText =
-    filter === 'topic'
-      ? `주제 - ${tag}`
-      : filter === 'book'
-        ? `책장 - ${tag}`
-        : 'All';
   return (
     <div className='flex flex-col gap-10'>
       <SectionHeader pageType={'archive'} />
@@ -49,7 +44,7 @@ export default async function ArchivePage({ searchParams }: ArchivePageProps) {
           />
           <FilterArea.List
             items={topicList}
-            currentTag={tag}
+            currentKeyword={keyword}
             currentFilter={'topic'}
           />
         </FilterArea>
@@ -61,19 +56,22 @@ export default async function ArchivePage({ searchParams }: ArchivePageProps) {
           />
           <FilterArea.List
             items={bookList}
-            currentTag={tag}
+            currentKeyword={keyword}
             currentFilter={'book'}
           />
         </FilterArea>
       </section>
 
       <section>
-        <PostListHeader leftText={ListHeaderText} rightText={postsCount} />
+        <PostListHeader
+          leftText={getArchiveListHeader(filter, keyword)}
+          rightText={postsCount}
+        />
         <PostList posts={posts} />
         <PagePagination
           allPostCount={postsCount}
           currentPageNum={currentPage}
-          href={`/archive?filter=${filter}&tag=${tag}&page=`}
+          href={`/archive?filter=${filter}&keyword=${keyword}&page=`}
         />
       </section>
     </div>
