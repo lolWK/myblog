@@ -180,6 +180,51 @@ export const fetchEditPostDetail = async (
   };
 };
 
+type PostDetailInitialValue = {
+  id: string;
+  postType: string;
+  title: string;
+  summary: string | undefined;
+  topic: string | undefined;
+  book: string | undefined;
+  content: TElement[];
+};
+
+// TODO. admin만 가능해야함
+export const fetchEditPostDetail = async (
+  postId: string
+): Promise<PostDetailInitialValue> => {
+  console.log(postId);
+
+  const { data: post, error } = await supabase
+    .from('post')
+    .select(
+      `
+      id,
+      title,
+      summary,
+      topic(id),
+      post_type(name),
+      book(id),
+      content
+      `
+    )
+    .eq('id', postId)
+    .single();
+
+  if (error) throw new Error(error.message);
+
+  return {
+    id: post.id,
+    postType: post.post_type ? post.post_type.name : 'blog',
+    title: post.title,
+    summary: post.summary ? post.summary : undefined,
+    topic: post.topic ? post.topic.id : undefined,
+    book: post.book ? post.book.id : undefined,
+    content: post.content as TElement[],
+  };
+};
+
 export const fetchPostCountByType = async (type: PostType): Promise<number> => {
   // count만 head쓰면 데이터들은 안불러옴!
   const { data, error, count } = await supabase
