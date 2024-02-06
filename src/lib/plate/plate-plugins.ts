@@ -55,12 +55,12 @@ import {
 } from '@udecode/plate-font';
 import {
   createHeadingPlugin,
-  ELEMENT_H1,
+  // ELEMENT_H1,
   ELEMENT_H2,
   ELEMENT_H3,
-  ELEMENT_H4,
-  ELEMENT_H5,
-  ELEMENT_H6,
+  // ELEMENT_H4,
+  // ELEMENT_H5,
+  // ELEMENT_H6,
   KEYS_HEADING,
 } from '@udecode/plate-heading';
 import {
@@ -190,7 +190,7 @@ export const plugins = createPlugins(
     createAlignPlugin({
       inject: {
         props: {
-          validTypes: [ELEMENT_PARAGRAPH, ELEMENT_H1, ELEMENT_H2, ELEMENT_H3],
+          validTypes: [ELEMENT_PARAGRAPH, ELEMENT_H2, ELEMENT_H3],
         },
       },
     }),
@@ -199,7 +199,7 @@ export const plugins = createPlugins(
         props: {
           validTypes: [
             ELEMENT_PARAGRAPH,
-            ELEMENT_H1,
+            // ELEMENT_H1,
             ELEMENT_H2,
             ELEMENT_H3,
             ELEMENT_BLOCKQUOTE,
@@ -213,7 +213,6 @@ export const plugins = createPlugins(
         props: {
           validTypes: [
             ELEMENT_PARAGRAPH,
-            ELEMENT_H1,
             ELEMENT_H2,
             ELEMENT_H3,
             ELEMENT_BLOCKQUOTE,
@@ -227,7 +226,7 @@ export const plugins = createPlugins(
         props: {
           defaultNodeValue: 1.5,
           validNodeValues: [1, 1.2, 1.5, 2, 3],
-          validTypes: [ELEMENT_PARAGRAPH, ELEMENT_H1, ELEMENT_H2, ELEMENT_H3],
+          validTypes: [ELEMENT_PARAGRAPH, ELEMENT_H2, ELEMENT_H3],
         },
       },
     }),
@@ -367,12 +366,12 @@ export const plugins = createPlugins(
         [ELEMENT_CODE_LINE]: CodeLineElement,
         [ELEMENT_CODE_SYNTAX]: CodeSyntaxLeaf,
         [ELEMENT_HR]: HrElement,
-        [ELEMENT_H1]: withProps(HeadingElement, { variant: 'h1' }),
+        // [ELEMENT_H1]: withProps(HeadingElement, { variant: 'h1' }),
         [ELEMENT_H2]: withProps(HeadingElement, { variant: 'h2' }),
         [ELEMENT_H3]: withProps(HeadingElement, { variant: 'h3' }),
-        [ELEMENT_H4]: withProps(HeadingElement, { variant: 'h4' }),
-        [ELEMENT_H5]: withProps(HeadingElement, { variant: 'h5' }),
-        [ELEMENT_H6]: withProps(HeadingElement, { variant: 'h6' }),
+        // [ELEMENT_H4]: withProps(HeadingElement, { variant: 'h4' }),
+        // [ELEMENT_H5]: withProps(HeadingElement, { variant: 'h5' }),
+        // [ELEMENT_H6]: withProps(HeadingElement, { variant: 'h6' }),
         [ELEMENT_IMAGE]: ImageElement,
         [ELEMENT_LI]: withProps(PlateElement, { as: 'li' }),
         [ELEMENT_LINK]: LinkElement,
