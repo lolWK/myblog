@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { PAGE_INFO } from '@/constants/pageInfo';
-import { SessionContext } from '@/contexts/SessionProvider';
+import { SessionContext } from '@/provider/SessionProvider';
 import { useContext } from 'react';
 
 type Props = {
