@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useRef, RefObject } from 'react';
+import { useRef, RefObject, useEffect } from 'react';
 import { cn } from '@udecode/cn';
 import { Plate } from '@udecode/plate-common';
 import { ELEMENT_PARAGRAPH } from '@udecode/plate-paragraph';
@@ -14,6 +14,7 @@ import { FixedToolbarButtons } from '@/components/plate-ui/fixed-toolbar-buttons
 import { FloatingToolbar } from '@/components/plate-ui/floating-toolbar';
 import { FloatingToolbarButtons } from '@/components/plate-ui/floating-toolbar-buttons';
 import type { TElement } from '@udecode/plate-common';
+import { useEditor } from '@/provider/EditorProvider';
 interface MyPlateEditorProps {
   editorRef?: RefObject<any>; // 나중에 수정하기
   initialValue?: TElement[];
@@ -29,9 +30,14 @@ export default function MyPlateEditor({
   isReadOnly = false,
 }: MyPlateEditorProps) {
   const containerRef = useRef(null);
+  const { setValue } = useEditor();
+
+  useEffect(() => {
+    setValue(initialValue);
+  }, []);
 
   const editModeStyle = 'min-h-[280px] px-[32px] py-8';
-  const ReadModeStyle = 'min-h-[280px] pb-[60px] -px-3';
+  const ReadModeStyle = 'min-h-[280px] pb-[60px] -mx-3';
 
   return (
     <DndProvider backend={HTML5Backend}>
@@ -62,11 +68,15 @@ export default function MyPlateEditor({
             readOnly={isReadOnly}
           />
 
-          <FloatingToolbar>
-            <FloatingToolbarButtons />
-          </FloatingToolbar>
+          {!isReadOnly && (
+            <>
+              <FloatingToolbar>
+                <FloatingToolbarButtons />
+              </FloatingToolbar>
 
-          <CursorOverlay containerRef={containerRef} />
+              <CursorOverlay containerRef={containerRef} />
+            </>
+          )}
         </div>
       </Plate>
     </DndProvider>

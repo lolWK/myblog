@@ -19,9 +19,9 @@ export default async function PostEditPage({ params }: PostEditPageProps) {
   const bookList = await fetchBooks();
   const topicList = await fetchTopics();
 
-  console.log(id);
-  console.log(content);
-  console.log(formValues);
+  // console.log(id);
+  // console.log(content);
+  // console.log(formValues);
 
   return (
     <>
