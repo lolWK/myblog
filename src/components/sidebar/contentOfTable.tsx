@@ -55,7 +55,7 @@ export default function ContentOfTableSidebar() {
   };
 
   return (
-    <aside className='sticky top-20 hidden w-36 font-p lg:block'>
+    <aside className='sticky top-36 hidden w-36 font-p lg:block'>
       <div className='flex items-center gap-2'>
         <p className='text-px14-500'>목차</p>
         <Icons.ul className='h-4 w-4' strokeWidth={1.5} />

@@ -46,21 +46,13 @@ import { ELEMENT_PARAGRAPH } from '@udecode/plate-paragraph';
 //   content: z.array(z.any()).optional(),
 // });
 
-interface EditInputFormData {
-  postType: string;
-  title: string;
-  summary: string | undefined;
-  topic: string | undefined;
-  book: string | undefined;
-  // content: TElement[];
-}
-
 type EditPostFormValue = {
   postType: string;
   title: string;
   summary: string | undefined;
   topic: string | undefined;
   book: string | undefined;
+  // content: TElement[];
 };
 
 interface EditFormProps {
@@ -101,7 +93,6 @@ export default function EditForm({
   );
 
   const form = useForm({
-    // resolver: zodResolver(formSchema),
     defaultValues: initialFormValues,
     // content: editPostFormValue?.content || [{ type: ELEMENT_PARAGRAPH, children: [{ text: '' }] }],
     // tag:''
@@ -109,7 +100,7 @@ export default function EditForm({
 
   const editorRef = useRef<PlateEditor | null>(null);
 
-  const onSubmit = (post: EditInputFormData) => {
+  const onSubmit = (post: EditPostFormValue) => {
     console.log(post);
 
     let editorData: TElement[] = [];

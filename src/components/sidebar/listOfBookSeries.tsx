@@ -17,7 +17,7 @@ export default async function ListOfBookSeriesSidebar({
   const seriesList = await fetchListOfBookSeries(postId);
 
   return (
-    <aside className='sticky top-20 hidden w-36 lg:block'>
+    <aside className='sticky top-36 hidden w-36 lg:block'>
       <div className='flex items-center justify-end gap-1'>
         <BookIcon className='h-4 w-4' fill='currentColor' />
         <span className='font-p text-px14-500'>{currentBook}</span>
