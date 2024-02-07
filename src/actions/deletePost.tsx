@@ -15,6 +15,6 @@ export async function deletePost(postId: string, postType: PostType) {
   console.log('삭제 성공');
 
   // TODO. searchPage 정리 되면 거기도 revalidate 해야함
-  revalidatePath(`/[postType]/page/[pageNum]`, 'page');
-  redirect(`/${postType}/page/1`);
+  revalidatePath(`/[postType]/[pageNum]`, 'page');
+  redirect(`/${postType}/1`);
 }

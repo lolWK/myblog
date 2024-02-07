@@ -5,6 +5,8 @@ import PostListHeader from '@/components/post/PostListHeader';
 import { fetchPostCountByType, fetchPosts } from '@/queries/post';
 import supabase from '@/lib/supabase';
 
+export const dynamicParams = false;
+
 type PageParams = {
   pageNum: string;
   postType: PostType;
@@ -13,20 +15,22 @@ type PageParams = {
 export async function generateStaticParams() {
   const { data: postTypes } = await supabase.from('post_type').select('name');
 
-  const postsPerPage = 8;
+  const POST_PER_PAGE = 8;
 
   if (!postTypes) return ['blog', 'note'];
 
   const paths = await Promise.all(
     postTypes.map(async (type) => {
       const postCount = await fetchPostCountByType(type.name as PostType);
-      const totalPages = Math.ceil(postCount / postsPerPage);
+      const totalPages = Math.ceil(postCount / POST_PER_PAGE);
 
       return Array.from({ length: totalPages }, (_, i) => ({
-        params: { postType: type.name, pageNum: String(i + 1) },
+        postType: type.name,
+        pageNum: String(i + 1),
       }));
     })
   );
+  console.log(paths.flat());
 
   return paths.flat();
 }
@@ -51,7 +55,7 @@ export default async function BlogAndNotesPage({
           allPostCount={postCount}
           currentPageNum={parseInt(pageNum)}
           // pageType={postType}
-          href={`/${postType}/page/`}
+          href={`/${postType}/`}
         />
       </div>
     </div>

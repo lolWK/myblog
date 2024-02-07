@@ -20,14 +20,14 @@ export default function MainHeaderNav() {
           </Link>
         </NavigationMenuItem>
         <NavigationMenuItem>
-          <Link href='/blog/page/1' legacyBehavior passHref>
+          <Link href='/blog/1' legacyBehavior passHref>
             <NavigationMenuLink className='font-h text-px16-300'>
               Blog
             </NavigationMenuLink>
           </Link>
         </NavigationMenuItem>
         <NavigationMenuItem>
-          <Link href='/note/page/1' legacyBehavior passHref>
+          <Link href='/note/1' legacyBehavior passHref>
             <NavigationMenuLink className='text-px-300 font-h'>
               Notes
             </NavigationMenuLink>

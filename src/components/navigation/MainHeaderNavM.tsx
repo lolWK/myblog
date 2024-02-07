@@ -27,14 +27,14 @@ export default function MainHeaderNavM() {
               </Link>
             </NavigationMenuItem>
             <NavigationMenuItem>
-              <Link href='/blog/page/1' legacyBehavior passHref>
+              <Link href='/blog/1' legacyBehavior passHref>
                 <NavigationMenuLink className='text-px6-300 block px-16 py-4 font-h'>
                   Blog
                 </NavigationMenuLink>
               </Link>
             </NavigationMenuItem>
             <NavigationMenuItem>
-              <Link href='/note/page/1' legacyBehavior passHref>
+              <Link href='/note/1' legacyBehavior passHref>
                 <NavigationMenuLink className='block px-16 py-4 font-h text-px16-300'>
                   Notes
                 </NavigationMenuLink>

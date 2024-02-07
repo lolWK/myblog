@@ -99,6 +99,6 @@ export async function updatePost(
   // TODO. 성공 시 토스트 띄우장
 
   // TODO. searchPage 정리 되면 거기도 revalidate 해야함
-  revalidatePath(`/[postType]/page/[pageNum]`, 'page');
-  redirect(`/${result.data.postType}/${postId}`);
+  revalidatePath(`/[postType]/[pageNum]`, 'page');
+  redirect(`/post/${postId}`);
 }
