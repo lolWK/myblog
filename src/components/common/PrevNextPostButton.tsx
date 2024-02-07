@@ -16,7 +16,7 @@ export default function PrevNextPostButton({ prevPost, nextPost }: Props) {
           variant='ghost'
           className='absolute left-0 flex h-fit w-2/5 min-w-40 justify-start p-0 font-p hover:bg-transparent'
         >
-          <Link href={`/${prevPost.postType}/${prevPost?.id}`}>
+          <Link href={`/post/${prevPost?.id}`}>
             <div className='flex flex-col justify-start gap-1'>
               <div className='flex items-center gap-1'>
                 <Icons.arrowLeft width={20} strokeWidth={1.5} />
@@ -33,7 +33,7 @@ export default function PrevNextPostButton({ prevPost, nextPost }: Props) {
           variant='ghost'
           className='absolute right-0 flex h-fit w-2/5 min-w-40 justify-end p-0 font-p hover:bg-transparent'
         >
-          <Link href={`/${nextPost.postType}/${nextPost?.id}`}>
+          <Link href={`/post/${nextPost?.id}`}>
             <div className='flex flex-col justify-end gap-1'>
               <div className='flex flex-row-reverse items-center gap-1'>
                 <Icons.arrowRight width={20} strokeWidth={1.5} />

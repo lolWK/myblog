@@ -101,6 +101,6 @@ export async function createPost(
   }
 
   // TODO. archive 페이지도 반영하기~
-  revalidatePath(`/[postType]/page/[pageNum]`, 'page');
-  redirect(`/${result.data.postType}/${postId}`);
+  revalidatePath(`/[postType]/[pageNum]`, 'page');
+  redirect(`/post/${postId}`);
 }

@@ -44,7 +44,7 @@ export default function PostList({ posts }: PostListProps) {
         className='w-full'
       >
         {posts.map((item, index) => (
-          <Link href={`/${item.postType}/${item.id}`} key={item.id}>
+          <Link href={`/post/${item.id}`} key={item.id}>
             <AccordionItem
               value={item.id.toString()}
               onMouseOver={() => handleMouseOver(item.id.toString())}

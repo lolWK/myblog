@@ -7,6 +7,7 @@ import Footer from '@/components/footer/Footer';
 import { TooltipProvider } from '@/components/plate-ui/tooltip';
 import { Toaster } from '@/components/ui/toaster';
 import { EditorProvider } from '@/provider/EditorProvider';
+
 interface LayoutProps {
   children: React.ReactNode;
 }

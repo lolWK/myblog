@@ -17,9 +17,7 @@ export default function PostDetailContent({ content }: PostProps) {
   return (
     <>
       <Suspense fallback={null}>
-        <div>
-          <DynamicEditor initialValue={content} isReadOnly={true} />
-        </div>
+        <DynamicEditor initialValue={content} isReadOnly={true} />
       </Suspense>
     </>
   );
