@@ -2,7 +2,7 @@
 
 import { revalidatePath } from 'next/cache';
 import { z } from 'zod';
-import supabase from '@/lib/supabase';
+import { createClient } from '@/util/supabaseServer';
 
 const createTopicAndBookSchema = z.object({
   content: z.string().min(1, {
@@ -23,6 +23,8 @@ export async function createTopicAndBook(
   formState: CreateTopicAndBookFormState,
   formData: FormData
 ): Promise<CreateTopicAndBookFormState> {
+  const supabaseWithAuth = createClient();
+
   const result = createTopicAndBookSchema.safeParse({
     content: formData.get('content'),
   });
@@ -58,7 +60,7 @@ export async function createTopicAndBook(
         ? { name: result.data.content }
         : { title: result.data.content };
 
-    const { data, error } = await supabase
+    const { data, error } = await supabaseWithAuth
       .from(type)
       .insert(insertData)
       .select();
