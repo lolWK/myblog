@@ -1,13 +1,18 @@
 'use server';
 
 import { revalidatePath } from 'next/cache';
-import supabase from '@/lib/supabase';
 import { redirect } from 'next/navigation';
+import { createClient } from '@/util/supabaseServer';
 
 export async function deletePost(postId: string, postType: PostType) {
+  const supabaseWithAuth = createClient();
+
   if (!postId) throw new Error();
 
-  const { error } = await supabase.from('post').delete().eq('id', postId);
+  const { error } = await supabaseWithAuth
+    .from('post')
+    .delete()
+    .eq('id', postId);
 
   if (error) throw new Error(error.message);
 

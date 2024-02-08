@@ -3,9 +3,10 @@
 import { z } from 'zod';
 import { Database, Tables, Enums } from '@/types/supabaseDB';
 import { revalidatePath } from 'next/cache';
-import supabase from '@/lib/supabase';
+// import supabase from '@/lib/supabase';
 import { getPostTypeId } from '@/queries/post';
 import { redirect } from 'next/navigation';
+import { createClient } from '@/util/supabaseServer';
 
 const createPostSchema = z.object({
   postType: z.enum(['blog', 'note']).default('blog'),
@@ -28,12 +29,13 @@ interface CreatePostFormState {
     _form?: string[];
   };
 }
-// : Tables<'post'>
+
 export async function createPost(
   formState: CreatePostFormState,
   formData: FormData
 ): Promise<CreatePostFormState> {
-  console.log('들어왔어용', formData);
+  // console.log('들어왔어용', formData);
+  const supabaseWithAuth = createClient();
 
   const contentString = formData.get('content');
   let postId;
@@ -47,7 +49,7 @@ export async function createPost(
     content: contentString ? JSON.parse(contentString as string) : [],
   });
 
-  console.log(result);
+  // console.log(result);
 
   if (!result.success) {
     console.log('Validation Error:', result.error);
@@ -67,7 +69,7 @@ export async function createPost(
       };
     }
 
-    const { data, error } = await supabase
+    const { data, error } = await supabaseWithAuth
       .from('post')
       .insert([
         {
@@ -80,7 +82,10 @@ export async function createPost(
         },
       ])
       .select(`id`);
-
+    const user = await supabaseWithAuth.auth.getUser();
+    console.log(user);
+    console.log(data);
+    console.log(error);
     if (error) throw new Error(error.message);
 
     postId = data[0].id;

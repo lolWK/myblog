@@ -1,5 +1,6 @@
 'use client';
 
+import * as actions from '@/actions';
 import { useRouter } from 'next/navigation';
 import { useContext } from 'react';
 import { SessionContext } from '@/provider/SessionProvider';
@@ -27,8 +28,6 @@ import {
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 
-import { login, logout } from '@/util/auth';
-
 const formSchema = z.object({
   email: z.string().email({
     message: '이메일 형식으로 입력해주세요',
@@ -52,7 +51,7 @@ export default function AdminLogin() {
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     const { email, password } = values;
-    login(email, password);
+    actions.login(email, password);
     router.refresh();
     form.reset({
       email: '',
@@ -61,7 +60,7 @@ export default function AdminLogin() {
   };
 
   const handleSignOut = async () => {
-    logout();
+    actions.logout();
     router.refresh();
   };
 

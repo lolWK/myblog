@@ -2,9 +2,9 @@
 
 import { z } from 'zod';
 import { revalidatePath } from 'next/cache';
-import supabase from '@/lib/supabase';
 import { redirect } from 'next/navigation';
 import { getPostTypeId } from '@/queries/post';
+import { createClient } from '@/util/supabaseServer';
 
 const createPostSchema = z.object({
   postType: z.enum(['blog', 'note']).default('blog'),
@@ -34,6 +34,8 @@ export async function updatePost(
   formState: UpdatePostFormState,
   formData: FormData
 ): Promise<UpdatePostFormState> {
+  const supabaseWithAuth = createClient();
+
   if (!postId) throw new Error();
 
   // post Id로 post type 이름 찾고 이전 이후 같으면 그 페이지만
@@ -65,7 +67,7 @@ export async function updatePost(
     const postTypeId = await getPostTypeId(result.data.postType);
     console.log('postTypeId', postTypeId);
 
-    const { error } = await supabase
+    const { error } = await supabaseWithAuth
       .from('post')
       .update({
         type_id: postTypeId,
