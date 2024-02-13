@@ -30,7 +30,6 @@ export async function generateStaticParams() {
       }));
     })
   );
-  console.log(paths.flat());
 
   return paths.flat();
 }
