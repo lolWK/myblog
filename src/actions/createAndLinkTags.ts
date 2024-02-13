@@ -1,6 +1,6 @@
 'use server';
 
-import { checkTagInTagTable, createNewTag } from '@/queries/tag';
+import { getTagByName, createNewTag } from '@/queries/tag';
 import { createClient } from '@/util/supabaseServer';
 
 export async function createAndLinkTags(postId: string, userTagsInput: string) {
@@ -11,7 +11,7 @@ export async function createAndLinkTags(postId: string, userTagsInput: string) {
   let tagIds = [];
 
   for (let tagName of tagNams) {
-    const existingTagId = await checkTagInTagTable(tagName);
+    const existingTagId = await getTagByName(tagName);
 
     console.log(tagNams);
     console.log('tag', tagName, 'existingTags', existingTagId);

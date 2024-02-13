@@ -56,9 +56,9 @@ export const createNewTag = async (tagName: string): Promise<string> => {
 };
 
 /**
- * @description post_tag 테이블에서 해당 post_id의 tag를 삭제하고 tag테이블에서 쓰이는 tag가 아니라면 tag도 삭제합니다.
+ * @description 등록된 post와 tag관계를 삭제합니다.
  */
-export const deleteTag = async (postId: string, tagId: string) => {
+export const deletePostTag = async (postId: string, tagId: string) => {
   const supabaseWithAuth = createClient();
 
   const { error } = await supabaseWithAuth
@@ -68,6 +68,15 @@ export const deleteTag = async (postId: string, tagId: string) => {
     .eq('tag_id', tagId);
 
   if (error) throw new Error(error.message);
+
+  await deleteUnusedTag(tagId);
+};
+
+/**
+ * @description 글에서 사용하지 않고 있는 태그를 체크하고 삭제합니다.
+ */
+export const deleteUnusedTag = async (tagId: string) => {
+  const supabaseWithAuth = createClient();
 
   const { data: existTag, error: checkPostTagError } = await supabase
     .from('post_tag')
