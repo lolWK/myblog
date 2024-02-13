@@ -5,6 +5,12 @@ import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
 import { getPostTypeId } from '@/queries/post';
 import { createClient } from '@/util/supabaseServer';
+import {
+  checkTagInTagTable,
+  createNewTag,
+  deleteTag,
+  fetchTagsForPost,
+} from '@/queries/tag';
 
 const createPostSchema = z.object({
   postType: z.enum(['blog', 'note']).default('blog'),
@@ -17,13 +23,27 @@ const createPostSchema = z.object({
     invalid_type_error: '주제를 선택해주세요',
   }),
   book: z.string().nullable().optional(),
-  content: z.array(z.any()).optional(),
+  content: z.array(z.any()),
+  tag: z
+    .string()
+    .nullish()
+    .refine(
+      (value) => {
+        const regex = /^[^,\s]+(,[^,\s]+)*$/;
+        return !value || regex.test(value);
+      },
+      {
+        message:
+          '태그 형식이 올바르지 않습니다. 태그1,태그2,태그3 형식으로 입력해주세요',
+      }
+    ),
 });
 
 interface UpdatePostFormState {
   errors: {
     title?: string[];
     topic?: string[];
+    tag?: string[];
     _form?: string[];
   };
 }
@@ -38,18 +58,14 @@ export async function updatePost(
 
   if (!postId) throw new Error();
 
-  // post Id로 post type 이름 찾고 이전 이후 같으면 그 페이지만
-  // 다르면 양쪽 다 revalidate 해줘야함 ;;
-
-  const contentString = formData.get('content');
-
   const result = createPostSchema.safeParse({
     postType: formData.get('postType'),
     title: formData.get('title'),
     summary: formData.get('summary') ? formData.get('summary') : null,
     topic: formData.get('topic'),
     book: formData.get('book') ? formData.get('book') : null,
-    content: contentString ? JSON.parse(contentString as string) : [],
+    content: JSON.parse(formData.get('content') as string),
+    tag: formData.get('tag') ? formData.get('tag') : null,
   });
 
   console.log(result);
@@ -79,9 +95,12 @@ export async function updatePost(
       })
       .eq('id', postId);
 
-    console.log('업데이트됨!');
-
     if (error) throw new Error(error.message);
+
+    if (result.data.tag) {
+      await updatePostTags(postId, result.data.tag);
+    }
+    console.log('업데이트됨!');
   } catch (err: unknown) {
     if (err instanceof Error) {
       return {
@@ -104,3 +123,49 @@ export async function updatePost(
   revalidatePath(`/[postType]/[pageNum]`, 'page');
   redirect(`/post/${postId}`);
 }
+
+const updatePostTags = async (postId: string, userInputTags: string) => {
+  const supabaseWithAuth = createClient();
+
+  const newTags = userInputTags.split(',').map((tag) => tag.trim());
+
+  const currentTags: Tag[] | null = await fetchTagsForPost(postId);
+  const currentTagNames = currentTags ? currentTags.map((tag) => tag.name) : [];
+
+  const tagsToAdd = newTags.filter((tag) => !currentTagNames.includes(tag));
+  const tagsToRemove = currentTagNames.filter((tag) => !newTags.includes(tag));
+
+  for (let tagName of tagsToAdd) {
+    const checkTags = await checkTagInTagTable(tagName);
+
+    if (checkTags) {
+      const { error } = await supabaseWithAuth
+        .from('post_tag')
+        .insert([{ post_id: postId, tag_id: checkTags.id }]);
+
+      if (error) throw new Error(error.message);
+    }
+
+    if (!checkTags) {
+      const addedId = await createNewTag(tagName);
+
+      const { error } = await supabaseWithAuth
+        .from('post_tag')
+        .insert([{ post_id: postId, tag_id: addedId }]);
+
+      if (error) throw new Error(error.message);
+    }
+  }
+
+  if (tagsToRemove && tagsToRemove.length > 0) {
+    if (!currentTags) return;
+
+    const tagIdsToRemove = currentTags
+      .filter((tag) => tagsToRemove.includes(tag.name))
+      .map((tag) => tag.id);
+
+    for (let tagId of tagIdsToRemove) {
+      await deleteTag(postId, tagId);
+    }
+  }
+};
