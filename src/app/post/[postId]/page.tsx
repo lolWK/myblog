@@ -1,6 +1,7 @@
 import PrevNextPostButton from '@/components/common/PrevNextPostButton';
 import PostDetailContent from '@/components/post/PostDetailContent';
 import PostDetailHeader from '@/components/post/PostDetailHeader';
+import PostDetailTags from '@/components/post/postDetailTags';
 import ContentOfTableSidebar from '@/components/sidebar/contentOfTable';
 import ListOfBookSeriesSidebar from '@/components/sidebar/listOfBookSeries';
 
@@ -36,7 +37,7 @@ export default async function PostDetailPage({ params }: PostDetailPageProps) {
   console.log(postId);
 
   // TOOD: 기능 수정하면서 data 들어오는 데이터 수정하기
-  const { prevPost, nextPost, content, ...post } = data;
+  const { prevPost, nextPost, content, tag, ...post } = data;
 
   if (!post) {
     notFound();
@@ -56,6 +57,7 @@ export default async function PostDetailPage({ params }: PostDetailPageProps) {
         <article className='order-2 flex-grow'>
           <PostDetailHeader postInfo={post} />
           <PostDetailContent content={content} />
+          <PostDetailTags tags={tag} />
         </article>
       </div>
 
