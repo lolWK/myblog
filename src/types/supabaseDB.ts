@@ -6,7 +6,7 @@ export type Json =
   | { [key: string]: Json | undefined }
   | Json[]
 
-export interface Database {
+export type Database = {
   graphql_public: {
     Tables: {
       [_ in never]: never
@@ -52,7 +52,7 @@ export interface Database {
       post: {
         Row: {
           book_id: string | null
-          content: Json | null
+          content: Json
           created_at: string
           id: string
           summary: string | null
@@ -63,7 +63,7 @@ export interface Database {
         }
         Insert: {
           book_id?: string | null
-          content?: Json | null
+          content: Json
           created_at?: string
           id?: string
           summary?: string | null
@@ -74,7 +74,7 @@ export interface Database {
         }
         Update: {
           book_id?: string | null
-          content?: Json | null
+          content?: Json
           created_at?: string
           id?: string
           summary?: string | null
@@ -107,6 +107,36 @@ export interface Database {
           }
         ]
       }
+      post_tag: {
+        Row: {
+          post_id: string
+          tag_id: string
+        }
+        Insert: {
+          post_id: string
+          tag_id: string
+        }
+        Update: {
+          post_id?: string
+          tag_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "post_tag_post_id_fkey"
+            columns: ["post_id"]
+            isOneToOne: false
+            referencedRelation: "post"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "post_tag_tag_id_fkey"
+            columns: ["tag_id"]
+            isOneToOne: false
+            referencedRelation: "tag"
+            referencedColumns: ["id"]
+          }
+        ]
+      }
       post_type: {
         Row: {
           id: string
@@ -117,6 +147,24 @@ export interface Database {
           name: string
         }
         Update: {
+          id?: string
+          name?: string
+        }
+        Relationships: []
+      }
+      tag: {
+        Row: {
+          created_at: string
+          id: string
+          name: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          name: string
+        }
+        Update: {
+          created_at?: string
           id?: string
           name?: string
         }

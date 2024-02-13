@@ -1,8 +1,13 @@
+import type { Database } from '@/types/supabaseDB';
 import supabase from '@/lib/supabase';
 
 import { QueryResult, QueryData, QueryError } from '@supabase/supabase-js';
 import type { TElement } from '@udecode/plate-common';
+import { fetchTagsForPost } from './tag';
 export const revalidate = 0;
+
+type PostTag = Database['public']['Tables']['tag']['Row'];
+type PostTagWithoutCreatedAt = Omit<PostTag, 'created_at'>;
 
 export const fetchPosts = async (type: PostType, page = 1): Promise<Post[]> => {
   const itemsPerPage = 8;
@@ -66,6 +71,8 @@ export const fetchPostDetail = async (postId: string): Promise<PostDetail> => {
 
   if (error) throw new Error(error.message);
 
+  const tags = await fetchTagsForPost(postId);
+
   const { data: prevPost } = await supabase
     .from('post')
     .select('id, title, post_type!inner(name)')
@@ -93,6 +100,7 @@ export const fetchPostDetail = async (postId: string): Promise<PostDetail> => {
     createdAt: post.created_at,
     updatedAt: post.updated_at,
     content: post.content as TElement[],
+    tag: tags,
     prevPost: prevPost
       ? {
           id: prevPost.id,
@@ -116,9 +124,9 @@ type PostDetailInitialValue = {
   topic: string | undefined;
   book: string | undefined;
   content: TElement[];
+  tag: string | undefined;
 };
 
-// TODO. admin만 가능해야함
 export const fetchEditPostDetail = async (
   postId: string
 ): Promise<PostDetailInitialValue> => {
@@ -140,6 +148,19 @@ export const fetchEditPostDetail = async (
     .eq('id', postId)
     .single();
 
+  let tagsText: string | undefined;
+
+  const tags = (await fetchTagsForPost(postId)) as Tag[];
+
+  if (!tags) {
+    tagsText = undefined;
+  } else {
+    tagsText = tags.map((tag) => tag?.name).join(',');
+  }
+  // const tagNames = tagsArray.join(',');
+
+  // return tagNames
+
   if (error) throw new Error(error.message);
 
   return {
@@ -150,6 +171,7 @@ export const fetchEditPostDetail = async (
     topic: post.topic ? post.topic.id : undefined,
     book: post.book ? post.book.id : undefined,
     content: post.content as TElement[],
+    tag: tagsText,
   };
 };
 
@@ -201,6 +223,63 @@ export const fetchSearchResult = async (query: string): Promise<Post[]> => {
   }
 
   return data.map((post) => ({
+    id: post.id,
+    title: post.title,
+    postType: post.post_type ? post.post_type.name : '',
+    summary: post.summary,
+    topic: post.topic ? post.topic.name : '',
+    book: post.book ? post.book.title : null,
+    createdAt: post.created_at,
+    updatedAt: post.updated_at,
+  }));
+};
+
+export const fetchSearchPostByTagName = async (tag: string) => {
+  const { data: tagData, error: tagError } = await supabase
+    .from('tag')
+    .select('id')
+    .eq('name', tag);
+
+  if (tagError) {
+    console.error('Error fetching tag:', tagError);
+    return [];
+  }
+  console.log(tagData, 'tagDatatagDatatagData');
+
+  const tagIds = tagData.map((t) => t.id);
+  const { data: postTagData, error: postTagError } = await supabase
+    .from('post_tag')
+    .select('post_id')
+    .in('tag_id', tagIds);
+
+  if (postTagError) {
+    console.error('Error fetching post_tag:', postTagError);
+    return [];
+  }
+
+  const postIds = postTagData.map((pt) => pt.post_id);
+  const { data: postData, error: postError } = await supabase
+    .from('post')
+    .select(
+      `
+      id,
+      title,
+      summary,
+      created_at,
+      updated_at,
+      post_type!inner(name),
+      topic(name),
+      book(title)
+    `
+    )
+    .in('id', postIds);
+
+  if (postError) {
+    console.error('Error fetching posts:', postError);
+    return [];
+  }
+
+  return postData.map((post) => ({
     id: post.id,
     title: post.title,
     postType: post.post_type ? post.post_type.name : '',

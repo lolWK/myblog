@@ -7,7 +7,9 @@ import { revalidatePath } from 'next/cache';
 import { getPostTypeId } from '@/queries/post';
 import { redirect } from 'next/navigation';
 import { createClient } from '@/util/supabaseServer';
+import { createAndLinkTags } from '.';
 
+// Zod는 .nullish() 메서드를 제공하여 null 또는 undefined 값을 둘 다 허용하는 더 깔끔한 방법을 제공
 const createPostSchema = z.object({
   postType: z.enum(['blog', 'note']).default('blog'),
   title: z.string().min(1, {
@@ -19,13 +21,27 @@ const createPostSchema = z.object({
     invalid_type_error: '주제를 선택해주세요',
   }),
   book: z.string().nullable().optional(),
-  content: z.array(z.any()).optional(),
+  content: z.array(z.any()),
+  tag: z
+    .string()
+    .nullish()
+    .refine(
+      (value) => {
+        const regex = /^[^,\s]+(,[^,\s]+)*$/;
+        return !value || regex.test(value);
+      },
+      {
+        message:
+          '태그 형식이 올바르지 않습니다. 태그1,태그2,태그3 형식으로 입력해주세요',
+      }
+    ),
 });
 
 interface CreatePostFormState {
   errors: {
     title?: string[];
     topic?: string[];
+    tag?: string[];
     _form?: string[];
   };
 }
@@ -34,10 +50,10 @@ export async function createPost(
   formState: CreatePostFormState,
   formData: FormData
 ): Promise<CreatePostFormState> {
-  // console.log('들어왔어용', formData);
+  console.log('들어왔어용', formData);
   const supabaseWithAuth = createClient();
 
-  const contentString = formData.get('content');
+  // const contentString = formData.get('content');
   let postId;
 
   const result = createPostSchema.safeParse({
@@ -46,10 +62,11 @@ export async function createPost(
     summary: formData.get('summary') ? formData.get('summary') : null,
     topic: formData.get('topic'),
     book: formData.get('book') ? formData.get('book') : null,
-    content: contentString ? JSON.parse(contentString as string) : [],
+    content: JSON.parse(formData.get('content') as string),
+    tag: formData.get('tag') ? formData.get('tag') : null,
   });
 
-  // console.log(result);
+  console.log(result);
 
   if (!result.success) {
     console.log('Validation Error:', result.error);
@@ -61,14 +78,12 @@ export async function createPost(
 
   try {
     const postTypeId = await getPostTypeId(result.data.postType);
-
     /* TODO. form 에러 따로 화면에 메시지 추가하기 */
     if (!postTypeId) {
       return {
         errors: { _form: ['Cannot find post'] },
       };
     }
-
     const { data, error } = await supabaseWithAuth
       .from('post')
       .insert([
@@ -82,14 +97,19 @@ export async function createPost(
         },
       ])
       .select(`id`);
-    const user = await supabaseWithAuth.auth.getUser();
-    console.log(user);
-    console.log(data);
-    console.log(error);
+
     if (error) throw new Error(error.message);
 
     postId = data[0].id;
+
+    if (result.data.tag) {
+      await createAndLinkTags(postId, result.data.tag);
+    }
+
+    console.log(data);
   } catch (err: unknown) {
+    console.log(err);
+
     if (err instanceof Error) {
       return {
         errors: {
@@ -108,4 +128,6 @@ export async function createPost(
   // TODO. archive 페이지도 반영하기~
   revalidatePath(`/[postType]/[pageNum]`, 'page');
   redirect(`/post/${postId}`);
+
+  // return { errors: {} };
 }

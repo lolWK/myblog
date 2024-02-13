@@ -21,6 +21,7 @@ type PostDetail = {
   createdAt: string;
   updatedAt: string;
   content: TElement[];
+  tag: Tag[] | null;
   prevPost: PrevAndNextPost;
   nextPost: PrevAndNextPost;
 };
@@ -39,6 +40,15 @@ type Topic = {
   id: string;
   name: string;
 };
+
+type Tag = {
+  id: string;
+  name: string;
+};
+// type Tag = {
+//   id: string;
+//   name: string;
+// } | null;
 
 type PrevAndNextPost = {
   id: string;
