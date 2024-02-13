@@ -23,7 +23,7 @@ export const fetchTagsForPost = async (
 /**
  * @description tagName이 테이블에 등록 되어있는 태그인지 체크합니다. 등록 되어있으면 tag를 반환합니다
  */
-export const checkTagInTagTable = async (
+export const getTagByName = async (
   tagName: string
 ): Promise<{ id: string } | null> => {
   const { data: tag } = await supabase
