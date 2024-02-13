@@ -1,10 +1,11 @@
 import PostList from '@/components/post/PostList';
 import PostListHeader from '@/components/post/PostListHeader';
-import { fetchSearchResult } from '@/queries/post';
+import { fetchSearchResult, fetchSearchPostByTagName } from '@/queries/post';
 
 type SearchPageProps = {
   searchParams: {
-    query: string;
+    query?: string;
+    tag?: string;
   };
 };
 
@@ -14,20 +15,32 @@ type SearchPageProps = {
  */
 
 export default async function SearchPage({ searchParams }: SearchPageProps) {
-  const { query } = searchParams;
+  const { query, tag } = searchParams;
 
-  const resultPosts = await fetchSearchResult(query);
-  console.log(resultPosts);
+  let searchResult: Post[] = [];
+  let searchText: string = '';
+
+  if (query) {
+    searchText = `검색어 - "${query}"`;
+    searchResult = await fetchSearchResult(query);
+  }
+
+  if (tag) {
+    searchText = `태그 - "${tag}"`;
+    searchResult = await fetchSearchPostByTagName(tag);
+  }
+
+  console.log(searchResult);
 
   return (
     <div className='mt-20'>
       <div>
         <PostListHeader
-          leftText={`"${query}" 검색 결과`}
-          rightText={resultPosts.length}
+          leftText={`${searchText} 검색 결과`}
+          rightText={searchResult.length}
         />
-        {resultPosts.length > 0 ? (
-          <PostList posts={resultPosts} />
+        {searchResult.length > 0 ? (
+          <PostList posts={searchResult} />
         ) : (
           <p className='h-[250px] text-center font-p text-px16-400 leading-[250px]'>
             해당 검색 결과가 없어요 🥲
