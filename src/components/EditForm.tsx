@@ -52,6 +52,7 @@ type EditPostFormValue = {
   summary: string | undefined;
   topic: string | undefined;
   book: string | undefined;
+  tag: string | undefined;
   // content: TElement[];
 };
 
@@ -69,6 +70,7 @@ const DEFAULT_FORM_VALUE = {
   summary: '',
   topic: '',
   book: '',
+  tag: '',
 };
 
 const INITIAL_VALUE = [{ type: ELEMENT_PARAGRAPH, children: [{ text: '' }] }];
@@ -122,9 +124,8 @@ export default function EditForm({
     if (editorData.length > 0) {
       formData.append('content', JSON.stringify(editorData));
     }
-    // for (let [key, value] of formData.entries()) {
-    //   console.log(`${key}: ${value}`);
-    // }
+    if (post.tag) formData.append('tag', post.tag);
+
     if (!postId) {
       console.log('새글쓰기모드~');
       createPostAction(formData);
@@ -141,8 +142,6 @@ export default function EditForm({
 
     // action(completeData);
   };
-
-  // const handleSubmit = () => {};
 
   return (
     <Form {...form}>
@@ -203,6 +202,7 @@ export default function EditForm({
 
               <FormMessage className='font-p text-px12-400 text-destructive'>
                 {formState.errors.title?.join(', ')}
+                {updateFormState.errors.title?.join(', ')}
               </FormMessage>
             </FormItem>
           )}
@@ -260,6 +260,7 @@ export default function EditForm({
               </div>
               <FormMessage className='font-p text-px12-400 text-destructive'>
                 {formState.errors.topic?.join(', ')}
+                {updateFormState.errors.topic?.join(', ')}
               </FormMessage>
             </FormItem>
           )}
@@ -294,8 +295,33 @@ export default function EditForm({
           )}
         />
 
-        {/* 내용 */}
+        {/* 태그 */}
+        <FormField
+          control={form.control}
+          name='tag'
+          render={({ field }) => (
+            <FormItem>
+              <div className='flex items-center gap-4 space-y-0'>
+                <FormLabel className='flex shrink-0 font-h text-px16-400'>
+                  태그
+                </FormLabel>
+                <FormControl>
+                  <Input
+                    placeholder='태그를 입력해주세요 ex. 태그1,태그2,태그3 (선택사항)'
+                    {...field}
+                  />
+                </FormControl>
+              </div>
 
+              <FormMessage className='font-p text-px12-400 text-destructive'>
+                {formState.errors.tag?.join(', ')}
+                {/* {updateFormState.errors.tag?.join(', ')} */}
+              </FormMessage>
+            </FormItem>
+          )}
+        />
+
+        {/* 내용 */}
         <FormItem className='flex items-center gap-4 space-y-0'>
           <FormLabel className='sr-only flex shrink-0 font-h  text-px16-400'>
             내용
