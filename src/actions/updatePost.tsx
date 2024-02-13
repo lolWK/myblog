@@ -6,9 +6,9 @@ import { redirect } from 'next/navigation';
 import { getPostTypeId } from '@/queries/post';
 import { createClient } from '@/util/supabaseServer';
 import {
-  checkTagInTagTable,
+  getTagByName,
   createNewTag,
-  deleteTag,
+  deletePostTag,
   fetchTagsForPost,
 } from '@/queries/tag';
 
@@ -136,7 +136,7 @@ const updatePostTags = async (postId: string, userInputTags: string) => {
   const tagsToRemove = currentTagNames.filter((tag) => !newTags.includes(tag));
 
   for (let tagName of tagsToAdd) {
-    const checkTags = await checkTagInTagTable(tagName);
+    const checkTags = await getTagByName(tagName);
 
     if (checkTags) {
       const { error } = await supabaseWithAuth
@@ -165,7 +165,7 @@ const updatePostTags = async (postId: string, userInputTags: string) => {
       .map((tag) => tag.id);
 
     for (let tagId of tagIdsToRemove) {
-      await deleteTag(postId, tagId);
+      await deletePostTag(postId, tagId);
     }
   }
 };
