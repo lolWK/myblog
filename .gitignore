@@ -1,4 +1,7 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+/build
+/public/robots.txt
+/public/sitemap*.xml
 
 # dependencies
 /node_modules
