@@ -1,0 +1,10 @@
+# *
+User-agent: *
+Allow: /
+
+# Host
+Host: myblog-sigma-drab.vercel.app
+
+# Sitemaps
+Sitemap: myblog-sigma-drab.vercel.app/sitemap.xml
+Sitemap: myblog-sigma-drab.vercel.app/server-sitemap-index.xml
