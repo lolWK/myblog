@@ -39,7 +39,7 @@ export const getTagByName = async (
 
 /**
  * @description tag테이블에 새 태그를 등록합니다
- * @returns {string} 등록한 tag id를 반환합니다.
+ * @returns 등록한 tag id를 반환합니다.
  */
 export const createNewTag = async (tagName: string): Promise<string> => {
   const supabaseWithAuth = createClient();

@@ -1,5 +1,6 @@
 import type { Database } from '@/types/supabaseDB';
 import supabase from '@/lib/supabase';
+import { cache } from 'react';
 
 import { QueryResult, QueryData, QueryError } from '@supabase/supabase-js';
 import type { TElement } from '@udecode/plate-common';
@@ -8,6 +9,14 @@ export const revalidate = 0;
 
 type PostTag = Database['public']['Tables']['tag']['Row'];
 type PostTagWithoutCreatedAt = Omit<PostTag, 'created_at'>;
+
+export const fetchPostIds = async () => {
+  const { data: postIds } = await supabase.from('post').select('id');
+
+  if (!postIds) return [];
+
+  return postIds;
+};
 
 export const fetchPosts = async (type: PostType, page = 1): Promise<Post[]> => {
   const itemsPerPage = 8;
@@ -48,8 +57,8 @@ export const fetchPosts = async (type: PostType, page = 1): Promise<Post[]> => {
   }));
 };
 
-export const fetchPostDetail = async (postId: string): Promise<PostDetail> => {
-  console.log(postId);
+const fetchPostDetail = async (postId: string): Promise<PostDetail> => {
+  console.log('요청중~', postId);
 
   const { data: post, error } = await supabase
     .from('post')
@@ -88,7 +97,7 @@ export const fetchPostDetail = async (postId: string): Promise<PostDetail> => {
     .order('created_at', { ascending: true })
     .limit(1)
     .single();
-  console.log(post);
+  // console.log(post);
 
   return {
     id: post.id,
@@ -115,6 +124,8 @@ export const fetchPostDetail = async (postId: string): Promise<PostDetail> => {
       : null,
   };
 };
+
+export const getPostDetail = cache(fetchPostDetail);
 
 type PostDetailInitialValue = {
   id: string;
