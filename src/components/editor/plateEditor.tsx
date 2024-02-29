@@ -34,6 +34,7 @@ export default function MyPlateEditor({
 
   useEffect(() => {
     setValue(initialValue);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const editModeStyle = 'min-h-[280px] px-[32px] py-8';
