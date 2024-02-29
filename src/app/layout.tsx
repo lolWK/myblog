@@ -7,19 +7,33 @@ import Footer from '@/components/footer/Footer';
 import { TooltipProvider } from '@/components/plate-ui/tooltip';
 import { Toaster } from '@/components/ui/toaster';
 import { EditorProvider } from '@/provider/EditorProvider';
+import Head from 'next/head';
 
 interface LayoutProps {
   children: React.ReactNode;
 }
 
 export const metadata: Metadata = {
-  title: '1klog.dev',
-  description: '나를 위해 기록해가는 Devlog',
+  title: {
+    default: '22_devlog',
+    template: '%s - 22_devlog',
+  },
+  description: '천천히 기록하는 개발 블로그',
 };
 
 export default function RootLayout({ children }: LayoutProps) {
   return (
     <html lang='ko'>
+      <Head>
+        <meta
+          name='naver-site-verification'
+          content='9bc921d582f8e33a86f91951b3709d4e598844e7'
+        />
+        <meta
+          name='google-site-verification'
+          content='JmZHGyWI6opS82DCHqFfIRA_inKm0eZFYBP9gS96t0s'
+        />
+      </Head>
       <body>
         <ThemeProvider attribute='class' defaultTheme='system' enableSystem>
           <SessionProvider>
