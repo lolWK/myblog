@@ -11,7 +11,7 @@ export default function Header() {
       <h1 className='colors-foreground'>
         <Link href='/blog/1'>
           <Logo fill='currentColor' />
-          <span className='sr-only'>1klog.dev blog</span>
+          <span className='sr-only'>22_devlog</span>
         </Link>
       </h1>
 
