@@ -62,5 +62,9 @@
     <img src="https://github.com/lolWK/myblog/assets/95265031/bfbf19f9-e5db-4f00-bcef-ddc5f75166d3" width=50%>
 </details>
 
+<details>
+  <summary>:sparkles: 댓글 기능 (구현 예정)</summary>
+</details>
+
 ## schema
 ![aaaa](https://github.com/lolWK/myblog/assets/95265031/80449bf5-8cc0-4618-95c0-09a686d42d11)
