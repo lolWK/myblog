@@ -7,13 +7,14 @@ import Footer from '@/components/footer/Footer';
 import { TooltipProvider } from '@/components/plate-ui/tooltip';
 import { Toaster } from '@/components/ui/toaster';
 import { EditorProvider } from '@/provider/EditorProvider';
-import Head from 'next/head';
+// import Head from 'next/head';
 
 interface LayoutProps {
   children: React.ReactNode;
 }
-
+// https://myblog-sigma-drab.vercel.app/
 export const metadata: Metadata = {
+  metadataBase: new URL(`${process.env.NEXT_PUBLIC_SITE_URL}`),
   title: {
     default: '22_devlog',
     template: '%s - 22_devlog',
@@ -24,7 +25,7 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: LayoutProps) {
   return (
     <html lang='ko'>
-      <Head>
+      {/* <Head>
         <meta
           name='naver-site-verification'
           content='9bc921d582f8e33a86f91951b3709d4e598844e7'
@@ -33,7 +34,7 @@ export default function RootLayout({ children }: LayoutProps) {
           name='google-site-verification'
           content='JmZHGyWI6opS82DCHqFfIRA_inKm0eZFYBP9gS96t0s'
         />
-      </Head>
+      </Head> */}
       <body>
         <ThemeProvider attribute='class' defaultTheme='system' enableSystem>
           <SessionProvider>
