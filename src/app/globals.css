@@ -7,6 +7,7 @@
     font-family: 'Pretendard';
     src: url('/assets/fonts/Pretendard-Light.subset.woff2') format('woff2');
     font-weight: 300;
+    preload: false;
     font-display: swap;
   }
 
@@ -14,6 +15,7 @@
     font-family: 'Pretendard';
     src: url('/assets/fonts/Pretendard-Regular.subset.woff2') format('woff2');
     font-weight: 400;
+    preload: false;
     font-display: swap;
   }
 
@@ -21,6 +23,7 @@
     font-family: 'Pretendard';
     src: url('/assets/fonts/Pretendard-Medium.subset.woff2') format('woff2');
     font-weight: 500;
+    preload: false;
     font-display: swap;
   }
 
@@ -29,12 +32,14 @@
     src: url('/assets/fonts/Hahmlet-Light.ttf') format('truetype');
     font-weight: 300;
     font-display: swap;
+    preload: false;
   }
 
   @font-face {
     font-family: 'Hahmlet';
     src: url('/assets/fonts/Hahmlet-Regular.ttf') format('truetype');
     font-weight: 400;
+    preload: false;
     font-display: swap;
   }
 
@@ -42,6 +47,7 @@
     font-family: 'Hahmlet';
     src: url('/assets/fonts/Hahmlet-Medium.ttf') format('truetype');
     font-weight: 500;
+    preload: false;
     font-display: swap;
   }
 
