@@ -57,8 +57,8 @@ export const fetchPosts = async (type: PostType, page = 1): Promise<Post[]> => {
   }));
 };
 
-const fetchPostDetail = async (postId: string): Promise<PostDetail> => {
-  console.log('요청중~', postId);
+export const fetchPostDetail = async (postId: string): Promise<PostDetail> => {
+  console.log('Fetching data for post ID:', postId);
 
   const { data: post, error } = await supabase
     .from('post')
@@ -80,9 +80,9 @@ const fetchPostDetail = async (postId: string): Promise<PostDetail> => {
 
   if (error) throw new Error(error.message);
 
-  const tags = await fetchTagsForPost(postId);
+  const tagsPromise = fetchTagsForPost(postId);
 
-  const { data: prevPost } = await supabase
+  const prevPostPromise = supabase
     .from('post')
     .select('id, title, post_type!inner(name)')
     .lt('created_at', post.created_at)
@@ -90,14 +90,19 @@ const fetchPostDetail = async (postId: string): Promise<PostDetail> => {
     .limit(1)
     .single();
 
-  const { data: nextPost } = await supabase
+  const nextPostPromise = supabase
     .from('post')
     .select('id, title, post_type!inner(name)')
     .gt('created_at', post.created_at)
     .order('created_at', { ascending: true })
     .limit(1)
     .single();
-  // console.log(post);
+
+  const [tags, { data: prevPost }, { data: nextPost }] = await Promise.all([
+    tagsPromise,
+    prevPostPromise,
+    nextPostPromise,
+  ]);
 
   return {
     id: post.id,
@@ -110,18 +115,8 @@ const fetchPostDetail = async (postId: string): Promise<PostDetail> => {
     updatedAt: post.updated_at,
     content: post.content as TElement[],
     tag: tags,
-    prevPost: prevPost
-      ? {
-          id: prevPost.id,
-          title: prevPost.title,
-        }
-      : null,
-    nextPost: nextPost
-      ? {
-          id: nextPost.id,
-          title: nextPost.title,
-        }
-      : null,
+    prevPost: prevPost ? { id: prevPost.id, title: prevPost.title } : null,
+    nextPost: nextPost ? { id: nextPost.id, title: nextPost.title } : null,
   };
 };
 
