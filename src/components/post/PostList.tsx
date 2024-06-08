@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import {
   Accordion,
   AccordionContent,
@@ -12,7 +12,6 @@ import CustomBadge from '@/components/common/CustomBadge';
 import BookIcon from '@/assets/icons/icon-book.svg';
 import { useDebounce } from '@/hooks/useDebounce';
 import { formatDate } from '@/util/formatDate';
-import { fetchPost } from '@/actions/fetchPost';
 interface PostListProps {
   posts: Post[];
 }
@@ -20,13 +19,6 @@ interface PostListProps {
 export default function PostList({ posts }: PostListProps) {
   const [hoverIndex, setHoverIndex] = useState<string | undefined>(undefined);
   const debouncedHoverIndex = useDebounce(hoverIndex, 300);
-  const [loading, setLoading] = useState<boolean>(false);
-
-  useEffect(() => {
-    if (debouncedHoverIndex) {
-      fetchPost(debouncedHoverIndex);
-    }
-  }, [debouncedHoverIndex]);
 
   const handleMouseOver = (itemId: string) => {
     setHoverIndex(itemId);
