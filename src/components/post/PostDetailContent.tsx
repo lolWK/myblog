@@ -3,8 +3,8 @@ import { Suspense } from 'react';
 import type { TElement } from '@udecode/plate-common';
 
 const DynamicEditor = dynamic(() => import('../editor/plateEditor'), {
-  suspense: true,
   ssr: false,
+  loading: () => <p>Loading editor...</p>,
 });
 
 type PostProps = {
@@ -16,9 +16,7 @@ export default function PostDetailContent({ content }: PostProps) {
 
   return (
     <>
-      <Suspense fallback={null}>
-        <DynamicEditor initialValue={content} isReadOnly={true} />
-      </Suspense>
+      <DynamicEditor initialValue={content} isReadOnly={true} />
     </>
   );
 }

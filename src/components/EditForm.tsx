@@ -29,6 +29,13 @@ import * as actions from '@/actions';
 import { useFormState } from 'react-dom';
 import TopicAndBookAddButton from './editor/TopicAndBookAddButton';
 import { ELEMENT_PARAGRAPH } from '@udecode/plate-paragraph';
+import dynamic from 'next/dynamic';
+
+// TODO. 로딩중 컴포넌트 추가하기
+const DynamicEditor = dynamic(() => import('./editor/plateEditor'), {
+  ssr: false,
+  loading: () => <p>Loading editor...</p>,
+});
 
 // const formSchema = z.object({
 //   postType: z.enum(['blog', 'note']).default('blog'),
@@ -328,7 +335,7 @@ export default function EditForm({
           </FormLabel>
 
           <div className='w-full rounded-lg border bg-background shadow'>
-            <MyPlateEditor
+            <DynamicEditor
               editorRef={editorRef}
               initialValue={initialContentValue}
             />
