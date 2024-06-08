@@ -20,8 +20,10 @@ const config = {
     },
     extend: {
       fontFamily: {
-        p: ['Pretendard', ...defaultTheme.fontFamily.sans],
-        h: ['Hahmlet', ...defaultTheme.fontFamily.serif],
+        p: ['var(--font-pretendard)'],
+        h: ['var(--font-hahmlet)'],
+        // p: ['Pretendard', ...defaultTheme.fontFamily.sans],
+        // h: ['Hahmlet', ...defaultTheme.fontFamily.serif],
       },
       fontSize: {
         'px16-300': [

@@ -7,12 +7,12 @@ import Footer from '@/components/footer/Footer';
 import { TooltipProvider } from '@/components/plate-ui/tooltip';
 import { Toaster } from '@/components/ui/toaster';
 import { EditorProvider } from '@/provider/EditorProvider';
-// import Head from 'next/head';
+import localFont from 'next/font/local';
 
 interface LayoutProps {
   children: React.ReactNode;
 }
-// https://myblog-sigma-drab.vercel.app/
+
 export const metadata: Metadata = {
   metadataBase: new URL(`${process.env.NEXT_PUBLIC_SITE_URL}`),
   title: {
@@ -22,19 +22,54 @@ export const metadata: Metadata = {
   description: '천천히 기록하는 개발 블로그',
 };
 
+// Font files can be colocated inside of `app`
+const hahmlet = localFont({
+  src: [
+    {
+      path: '../assets/fonts/Hahmlet-Light.woff2',
+      weight: '300',
+      style: 'normal',
+    },
+    {
+      path: '../assets/fonts/Hahmlet-Regular.woff2',
+      weight: '400',
+      style: 'normal',
+    },
+    {
+      path: '../assets/fonts/Hahmlet-Medium.woff2',
+      weight: '500',
+      style: 'normal',
+    },
+  ],
+  display: 'swap',
+  variable: '--font-hahmlet',
+});
+
+const pretendard = localFont({
+  src: [
+    {
+      path: '../assets/fonts/Pretendard-Light.subset.woff2',
+      weight: '300',
+      style: 'normal',
+    },
+    {
+      path: '../assets/fonts/Pretendard-Regular.subset.woff2',
+      weight: '400',
+      style: 'normal',
+    },
+    {
+      path: '../assets/fonts/Pretendard-Medium.subset.woff2',
+      weight: '500',
+      style: 'normal',
+    },
+  ],
+  display: 'swap',
+  variable: '--font-pretendard',
+});
+
 export default function RootLayout({ children }: LayoutProps) {
   return (
-    <html lang='ko'>
-      {/* <Head>
-        <meta
-          name='naver-site-verification'
-          content='9bc921d582f8e33a86f91951b3709d4e598844e7'
-        />
-        <meta
-          name='google-site-verification'
-          content='JmZHGyWI6opS82DCHqFfIRA_inKm0eZFYBP9gS96t0s'
-        />
-      </Head> */}
+    <html lang='ko' className={`${hahmlet.variable} ${pretendard.variable}`}>
       <body>
         <ThemeProvider attribute='class' defaultTheme='system' enableSystem>
           <SessionProvider>
